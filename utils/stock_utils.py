@@ -40,7 +40,6 @@ class StockUtils:
     def get_previous_work_day():
         """获取前面的工作日"""
         previous_day = find_workday(-1)
-        # print("寻找workday" + str(find_workday(-1)))
         return previous_day
 
     # 仅用于判定当前时间是13点之前还是之后
@@ -49,7 +48,6 @@ class StockUtils:
         # A股交易时间范围
         n_date = datetime.datetime.now().date()
         time_13 = datetime.datetime.strptime(str(n_date) + '13:00', '%Y-%m-%d%H:%M')
-
         # 当前时间
         n_time = datetime.datetime.now()
         return n_time < time_13
@@ -60,22 +58,25 @@ class StockUtils:
         # A股交易时间范围
         n_date = datetime.datetime.now().date()
         time_13 = datetime.datetime.strptime(str(n_date) + '15:00', '%Y-%m-%d%H:%M')
-
         # 当前时间
         n_time = datetime.datetime.now()
         return n_time >= time_13
 
-    # 如果当天是休息日，该方法获取最近的交易日的日期的timestamp（要排除掉调休的周六周日）
-    def get_previous_workday_timestamp(self):
-        # 最近的一个工作日
-        previous_work_day = StockUtils.get_previous_work_day()
-        # 返回星期几（数字0 代表周一）
-        week_day = previous_work_day.weekday()
-        if week_day < 5:    # 小于5 代表是周一到周五的工作日
-            timestamp = datetime.datetime.strptime(str(previous_work_day) + ' 15:00:00', '%Y-%m-%d %H:%M:%S')
-            return timestamp
-        else:               # 周六周日，应该返回周六周日之前的最近一个周一到周五的工作日
-            return 0
+    # 获取最近的交易日的日期，如果今天是交易日就返回今天
+    def get_most_recent_trade_day(self):
+        if StockUtils.today_is_a_stock_trade_day():
+            return datetime.datetime.now().strftime('%Y-%m-%d')
+        else:
+            # 最近的一个工作日
+            previous_work_day = StockUtils.get_previous_work_day()
+            # 返回星期几（数字0 代表周一）
+            week_day = previous_work_day.weekday()
+            if week_day < 5:  # 小于5 代表是周一到周五的工作日
+                return previous_work_day.strftime('%Y-%m-%d')
+            else:  # 周六周日，应该返回周六周日之前的最近一个周一到周五的工作日
+                # todo 找到周五，待处理
+                return 0
+
 
 
 

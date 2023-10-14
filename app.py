@@ -16,7 +16,7 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     db_util = DBUtils()
-    db_util.refresh_zhqd_timestamps_from_db()
+    db_util.query_zhqd_timestamps_from_db()
     timestamps = np.array(db_util.get_timestamps())
     zhqds = np.array(db_util.get_zhqds())
 
@@ -26,18 +26,26 @@ def index():
 @app.route('/echarts')
 def echarts():
     db_util = DBUtils()
-    db_util.refresh_zhqd_timestamps_from_db()
+    # 查询最近40个交易日的综合强度数据
+    db_util.query_zhqd_timestamps_from_db()
     timestamps = np.array(db_util.get_timestamps())
     zhqds = np.array(db_util.get_zhqds())
 
-    return render_template('echarts.html', timestamps=timestamps, zhqds=zhqds)
+    # 查询最近一个交易日当天的综合强度数据
+    db_util.query_most_recent_trade_day_zhqds_from_db()
+    most_recent_day_zhqds = db_util.get_most_recent_day_zhqds()
+    most_recent_day_timestamps = db_util.get_most_recent_day_timestamps()
+
+    return render_template('echarts.html', timestamps=timestamps, zhqds=zhqds,
+                           most_recent_day_zhqds=most_recent_day_zhqds,
+                           most_recent_day_timestamps=most_recent_day_timestamps)
 
 
 @app.route('/cyberpunk')
 def cyberpunk_plot_pic():
     filename = "tmp_cyberpunk.png"
     db_util = DBUtils()
-    db_util.refresh_zhqd_timestamps_from_db()
+    db_util.query_zhqd_timestamps_from_db()
     matplot_util = MatplotUtils()
     matplot_util.init_y_data(db_util.get_zhqds(), db_util.get_timestamps())
     matplot_util.save_cyberpunk_plot_pic(get_absolute_file_path(filename))
@@ -49,7 +57,7 @@ def cyberpunk_plot_pic():
 def matplotx_light_pic():
     filename = "tmp_matplotx_light.png"
     db_util = DBUtils()
-    db_util.refresh_zhqd_timestamps_from_db()
+    db_util.query_zhqd_timestamps_from_db()
     matplot_util = MatplotUtils()
     matplot_util.init_y_data(db_util.get_zhqds(), db_util.get_timestamps())
     matplot_util.save_matplotx_light_pic(get_absolute_file_path(filename))
@@ -61,7 +69,7 @@ def matplotx_light_pic():
 def matplotx_dark_pic():
     filename = "matplotx_dark.png"
     db_util = DBUtils()
-    db_util.refresh_zhqd_timestamps_from_db()
+    db_util.query_zhqd_timestamps_from_db()
     matplot_util = MatplotUtils()
     matplot_util.init_y_data(db_util.get_zhqds(), db_util.get_timestamps())
     matplot_util.save_matplotx_dark_pic(get_absolute_file_path(filename))
@@ -73,7 +81,7 @@ def matplotx_dark_pic():
 def quantum_black_pic():
     filename = "quantum_black.png"
     db_util = DBUtils()
-    db_util.refresh_zhqd_timestamps_from_db()
+    db_util.query_zhqd_timestamps_from_db()
     matplot_util = MatplotUtils()
     matplot_util.init_y_data(db_util.get_zhqds(), db_util.get_timestamps())
     matplot_util.save_quantum_black_pic(get_absolute_file_path(filename))

@@ -1,8 +1,9 @@
 
 import logging
-import configparser
-
 import pymysql
+
+from utils.config_helper import ConfigHelper
+from utils.stock_utils import StockUtils
 
 
 class DBUtils:
@@ -10,31 +11,28 @@ class DBUtils:
     timestamps = []
     zhqd_timestamps = []
 
+    most_recent_trade_day_zhqds = []
+    most_recent_trade_day_timestamps = []
+
     def __init__(self):
-        conf = configparser.ConfigParser()
-        conf.read('config.ini')
-        config_db_name = 'PROD_DATABASE'
-        # config_db_name = 'DEV_DATABASE'
-        db_address = conf.get(config_db_name, 'HOST')
-        db_port = int(conf.get(config_db_name, 'PORT'))
-        db_user = conf.get(config_db_name, 'USER')
-        db_password = conf.get(config_db_name, 'PASSWORD')
-        db_name = conf.get(config_db_name, 'DBNAME')
-        db_charset = conf.get(config_db_name, 'CHARSET')
+        self.config_helper = ConfigHelper()
 
-        self.conn = pymysql.connect(host=db_address, port=db_port, user=db_user, password=db_password, database=db_name,
-                                    charset=db_charset)
-
+    def __connect_to_db(self):
+        self.conn = pymysql.connect(host=self.config_helper.db_address, port=self.config_helper.db_port,
+                                    user=self.config_helper.db_user, password=self.config_helper.db_password,
+                                    database=self.config_helper.db_name, charset=self.config_helper.db_charset)
         self.cursor = self.conn.cursor()
 
-    def refresh_zhqd_timestamps_from_db(self):
-        # 查询出数据之后按照 index 值降序排序，并获取前60条
-        sql = """select zhqd, timestamp, is_trade_time, data_crawl_timestamp, id from kaipanla_zhqd_unique \
-             WHERE is_trade_time = 0 ORDER BY id DESC LIMIT 40 """
+    # 查询的是最近40个交易日的数据
+    def query_zhqd_timestamps_from_db(self):
+        self.__connect_to_db()
 
-        cursor = self.cursor
+        # 查询出数据之后按照 index 值降序排序，并获取前60条
+        sql = "select zhqd, timestamp, is_trade_time, data_crawl_timestamp, id from %s \
+                     WHERE is_trade_time = 0 ORDER BY id DESC LIMIT 40 " % self.config_helper.db_table_name_zhqd_unique
+
         try:
-            cursor.execute(sql)
+            self.cursor.execute(sql)
         except Exception as e:
             print(e)
 
@@ -42,7 +40,7 @@ class DBUtils:
         self.timestamps.clear()
         self.zhqd_timestamps.clear()
 
-        results = cursor.fetchall()
+        results = self.cursor.fetchall()
         for result in results:
             self.zhqds.append(result[0])
             # 去前置0的操作
@@ -60,9 +58,46 @@ class DBUtils:
 
         self.conn.close()
 
+    # 查询的是最近一个交易日的数据，以分钟计算
+    def query_most_recent_trade_day_zhqds_from_db(self):
+        self.__connect_to_db()
+
+        most_recent_trade_day = StockUtils.get_most_recent_trade_day(self)
+        # 查询出数据之后按照 index 值降序排序，并获取前60条
+        sql = "select zhqd, timestamp, is_trade_time, data_crawl_timestamp, id from %s \
+             WHERE is_trade_time = 1 ORDER BY id DESC LIMIT 40 " % self.config_helper.db_table_name_zhqd_unique
+
+        try:
+            self.cursor.execute(sql)
+        except Exception as e:
+            print(e)
+
+        self.most_recent_trade_day_zhqds.clear()
+        self.most_recent_trade_day_timestamps.clear()
+
+        results = self.cursor.fetchall()
+        for result in results:
+            self.most_recent_trade_day_zhqds.append(result[0])
+            # 只保留时分秒
+            timestamp = str(result[1].hour) + str(result[1].minute)
+            self.most_recent_trade_day_timestamps.append(timestamp)
+            logging.log(logging.DEBUG, "zhqd: " + str(result[0]))
+            logging.log(logging.DEBUG, "去日期后的timestamps: " + timestamp)
+
+        self.most_recent_trade_day_zhqds.reverse()
+        self.most_recent_trade_day_timestamps.reverse()
+
+        self.conn.close()
+
     def get_zhqds(self):
         return self.zhqds
 
     def get_timestamps(self):
         return self.timestamps
+
+    def get_most_recent_day_zhqds(self):
+        return self.most_recent_trade_day_zhqds
+
+    def get_most_recent_day_timestamps(self):
+        return self.most_recent_trade_day_timestamps
 
