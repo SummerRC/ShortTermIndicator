@@ -62,7 +62,7 @@
     motion_strength_chart.setOption(chart_30day.option);
 
     //近最近1个交易日的市场情绪
-    let chart_last_trade_day = new LineChart("最近一个交易日情绪", most_recent_day_zhqds, most_recent_day_zhqds)
+    let chart_last_trade_day = new LineChart("最近一个交易日情绪", most_recent_day_timestamps, most_recent_day_zhqds)
     // 基于准备好的dom，初始化市场情绪echarts实例
     last_trade_day_motion_strength_chart = echarts.init(document.getElementById('last_trade_day_motion_strength'));
     // 使用刚指定的配置项和数据显示图表。

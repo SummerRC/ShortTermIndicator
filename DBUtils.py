@@ -1,5 +1,7 @@
 
 import logging
+from datetime import datetime
+
 import pymysql
 
 from utils.config_helper import ConfigHelper
@@ -62,10 +64,13 @@ class DBUtils:
     def query_most_recent_trade_day_zhqds_from_db(self):
         self.__connect_to_db()
 
-        most_recent_trade_day = StockUtils.get_most_recent_trade_day(self)
+        most_recent_trade_day = StockUtils.get_most_recent_trade_day()
+        start_time = datetime.strptime(str(most_recent_trade_day) + '9:15', '%Y-%m-%d%H:%M')
+        end_time = datetime.strptime(str(most_recent_trade_day) + '15:00', '%Y-%m-%d%H:%M')
         # 查询出数据之后按照 index 值降序排序，并获取前60条
-        sql = "select zhqd, timestamp, is_trade_time, data_crawl_timestamp, id from %s \
-             WHERE is_trade_time = 1 ORDER BY id DESC LIMIT 40 " % self.config_helper.db_table_name_zhqd_unique
+        sql = ("select zhqd, timestamp, is_trade_time, data_crawl_timestamp, id from %s \
+             WHERE timestamp BETWEEN '%s' AND '%s'" %
+               (self.config_helper.db_table_name_zhqd_unique, start_time, end_time))
 
         try:
             self.cursor.execute(sql)
@@ -78,14 +83,11 @@ class DBUtils:
         results = self.cursor.fetchall()
         for result in results:
             self.most_recent_trade_day_zhqds.append(result[0])
-            # 只保留时分秒
-            timestamp = str(result[1].hour) + str(result[1].minute)
+            # 只保留时、分
+            timestamp = str(result[1].hour) + ":" + str(result[1].minute)
             self.most_recent_trade_day_timestamps.append(timestamp)
             logging.log(logging.DEBUG, "zhqd: " + str(result[0]))
             logging.log(logging.DEBUG, "去日期后的timestamps: " + timestamp)
-
-        self.most_recent_trade_day_zhqds.reverse()
-        self.most_recent_trade_day_timestamps.reverse()
 
         self.conn.close()
 
