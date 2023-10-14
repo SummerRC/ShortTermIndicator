@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="utf-8" />
+    <title>ECharts 短线指标</title>
+    <!-- 引入刚刚下载的 ECharts 文件 -->
+    <script src="../static/js/echarts.js"></script>
+  </head>
+
+  <script type="text/javascript">
+     timestamps=[]
+     zhqds=[]
+    </script>
+
+  {% for timestamp in timestamps %}
+     <script type="text/javascript">
+            timestamps.push('{{timestamp}}');
+     </script>
+  {% endfor %}
+
+   {% for zhqd in zhqds %}
+     <script type="text/javascript">
+            zhqds.push('{{zhqd}}');
+     </script>
+  {% endfor %}
+
+  <body>
+    <!-- 为 ECharts 准备一个定义了宽高的 DOM -->
+    <div id="main" style="width: 800px;height:660px;"></div>
+    <script type="text/javascript">
+      // 基于准备好的dom，初始化echarts实例
+      var myChart = echarts.init(document.getElementById('main'));
+
+      // 指定图表的配置项和数据
+      var option = {
+        title: {
+            text: '市场情绪',
+            left: 'center'
+        },
+        tooltip: {
+            trigger: 'item',
+            formatter: '日期: {b} <br/>情绪: {c}'       //鼠标放在该点，显示日期和情绪
+        },
+		xAxis: {
+            data: timestamps,
+            // 刻度表现会居中
+            axisTick: {
+                alignWithLabel: true
+            },
+            axisLabel: {
+                interval: 'auto',      //0强制显示所有标签
+                //rotate: 90,         //旋转之后能都显示得下，但有点丑
+            },
+		},
+		yAxis: {
+            type: 'value',
+            min: 0,
+            max: 75,
+            // 强制间隔是25
+            interval: 25,
+            // 显示次分割线
+            minorSplitLine: {
+                show: true,
+            },
+            // 次刻度线分割的数量
+            minorTick: {
+                splitNumber: 2
+            },
+            //设置标签样式
+            axisLabel: {
+                fontWeight: 'normal',   //bold
+                fontSize: 16,
+                color: 'black'
+            }
+        },
+       //缩放相关，未完成
+       dataZoom: [
+           {
+            show: true,
+            type: 'inside',
+            filterMode: 'none',
+            yAxisIndex: [0],
+            startValue: 0,
+            endValue: 100
+           }
+       ],
+		series: [
+			{
+                data: zhqds,
+				type: 'line',
+
+                label: {
+                    // true会显示情绪强度值
+                    show: false,
+                    position: 'top',
+                    textStyle: {
+                        fontSize: 8
+                    }
+                },
+                colorBy: "series",
+			}
+		]
+	  };
+
+      // 使用刚指定的配置项和数据显示图表。
+      myChart.setOption(option);
+    </script>
+  </body>
+</html>
