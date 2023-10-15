@@ -1,8 +1,8 @@
-class MotionStrengthLineChart {
-    constructor(chart_title, timestamps, zhqds) {
+class HighestLineChart {
+    constructor(chart_title, trade_day, highest) {
         this.chart_title = chart_title
-        this.x_data = timestamps
-        this.y_data = zhqds
+        this.x_data = trade_day
+        this.y_data = highest
         // 指定图表的配置项和数据
         this.option = {
             title: {
@@ -11,7 +11,7 @@ class MotionStrengthLineChart {
             },
             tooltip: {
                 trigger: 'item',
-                formatter: '日期: {b} <br/>情绪: {c}'       //鼠标放在该点，显示日期和情绪
+                formatter: '日期: {b} <br/>高度: {c}'       //鼠标放在该点，显示日期和情绪
             },
             xAxis: {
                 data: this.x_data,
@@ -21,22 +21,18 @@ class MotionStrengthLineChart {
                 },
                 axisLabel: {
                     interval: 'auto',      //0强制显示所有标签
-                    //rotate: 90,         //旋转之后能都显示得下，但有点丑
+                    rotate: 90,         //旋转之后能都显示得下，但有点丑
                 },
             },
             yAxis: {
                 type: 'value',
                 min: 0,
-                max: 75,
-                // 强制间隔是25
-                interval: 25,
+                max: 10,
+                // 强制间隔是1
+                interval: 1,
                 // 显示次分割线
                 minorSplitLine: {
-                    show: true,
-                },
-                // 次刻度线分割的数量
-                minorTick: {
-                    splitNumber: 2
+                    show: false,
                 },
                 //设置标签样式
                 axisLabel: {
@@ -45,21 +41,11 @@ class MotionStrengthLineChart {
                     color: 'black'
                 }
             },
-            //缩放相关，未完成
-            dataZoom: [
-                {
-                    show: true,
-                    type: 'inside',
-                    filterMode: 'none',
-                    yAxisIndex: [0],
-                    startValue: 0,
-                    endValue: 100
-                }
-            ],
             series: [
                 {
                     data: this.y_data,
                     type: 'line',
+                    smooth: true,
 
                     label: {
                         // true会显示情绪强度值

@@ -16,6 +16,9 @@ class DBUtils:
     most_recent_trade_day_zhqds = []
     most_recent_trade_day_timestamps = []
 
+    highest = []
+    trade_day = []
+
     def __init__(self):
         self.config_helper = ConfigHelper()
 
@@ -91,6 +94,31 @@ class DBUtils:
 
         self.conn.close()
 
+    # 查询最高板
+    def query_highest_from_db(self):
+        self.__connect_to_db()
+
+        # 查询出数据之后按照 index 值降序排序，并获取前60条
+        sql = ("select trade_day, highest from %s ORDER BY trade_day ASC LIMIT 100" % self.config_helper.db_tn_tdx_lb)
+
+        try:
+            self.cursor.execute(sql)
+        except Exception as e:
+            logging.log(logging.ERROR, "去前置0后的timestamps: " + str(e))
+
+        self.highest.clear()
+        self.trade_day.clear()
+
+        results = self.cursor.fetchall()
+        for result in results:
+            # 去前置0的操作
+            tm = result[0].timetuple()
+            mon_day = str(tm.tm_mon) + '-' + str(tm.tm_mday)
+            self.trade_day.append(mon_day)
+            self.highest.append(result[1])
+
+        self.conn.close()
+
     def get_zhqds(self):
         return self.zhqds
 
@@ -103,3 +131,8 @@ class DBUtils:
     def get_most_recent_day_timestamps(self):
         return self.most_recent_trade_day_timestamps
 
+    def get_trade_day(self):
+        return self.trade_day
+
+    def get_highest(self):
+        return self.highest

@@ -17,6 +17,8 @@
     zhqds = []
     most_recent_day_zhqds = []
     most_recent_day_timestamps = []
+    trade_day = []
+    highest = []
 </script>
 
 {% for timestamp in timestamps %}
@@ -43,30 +45,54 @@
 </script>
 {% endfor %}
 
+{% for day in trade_day %}
+<script type="text/javascript">
+    trade_day.push('{{day}}');
+</script>
+{% endfor %}
+
+{% for high in highest %}
+<script type="text/javascript">
+    highest.push('{{high}}');
+</script>
+{% endfor %}
+
 <body>
 <div class=".container-fluid">
-    <!-- 为 ECharts 准备一个定义了宽高的 DOM -->
-    <div class="col-md-6" id="motion_strength" style="height:660px;"></div>
-    <div class="col-md-6" id="last_trade_day_motion_strength" style="height:660px;">text
+    <div class="row">
+        <!-- 为 ECharts 准备一个定义了宽高的 DOM -->
+        <div class="col-md-6" id="motion_strength" style="height:660px;"></div>
+        <div class="col-md-6" id="last_trade_day_motion_strength" style="height:660px;">text  </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6" id="lian_ban_highest" style="height:660px;"></div>
     </div>
 </div>
 
 <!-- 引入 定义好ECharts样式的line_chart 文件 -->
 <script src="../static/js/line_chart.js"></script>
+<script src="../static/js/line_chart_highest.js"></script>
 <script type="text/javascript">
     //近30个交易日的市场情绪
-    let chart_30day = new LineChart("市场情绪", timestamps, zhqds)
+    let chart_30day = new MotionStrengthLineChart("市场情绪", timestamps, zhqds)
     // 基于准备好的dom，初始化市场情绪echarts实例
     motion_strength_chart = echarts.init(document.getElementById('motion_strength'));
     // 使用刚指定的配置项和数据显示图表。
     motion_strength_chart.setOption(chart_30day.option);
 
     //近最近1个交易日的市场情绪
-    let chart_last_trade_day = new LineChart("最近一个交易日情绪", most_recent_day_timestamps, most_recent_day_zhqds)
+    let chart_last_trade_day = new MotionStrengthLineChart("最近一个交易日情绪", most_recent_day_timestamps, most_recent_day_zhqds)
     // 基于准备好的dom，初始化市场情绪echarts实例
     last_trade_day_motion_strength_chart = echarts.init(document.getElementById('last_trade_day_motion_strength'));
     // 使用刚指定的配置项和数据显示图表。
     last_trade_day_motion_strength_chart.setOption(chart_last_trade_day.option);
+
+    //近30个交易日的连板高度情况
+    let chart_lian_ban = new HighestLineChart("历史连板高度", trade_day, highest)
+    // 基于准备好的dom，初始化市场情绪echarts实例
+    lian_ban_highest_chart = echarts.init(document.getElementById('lian_ban_highest'));
+    // 使用刚指定的配置项和数据显示图表。
+    lian_ban_highest_chart.setOption(chart_lian_ban.option);
 
 </script>
 </body>

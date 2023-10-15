@@ -15,12 +15,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    db_util = DBUtils()
-    db_util.query_zhqd_timestamps_from_db()
-    timestamps = np.array(db_util.get_timestamps())
-    zhqds = np.array(db_util.get_zhqds())
-
-    return render_template('index.html', timestamps=timestamps, zhqds=zhqds)
+    return echarts()
 
 
 @app.route('/echarts')
@@ -36,9 +31,15 @@ def echarts():
     most_recent_day_zhqds = db_util.get_most_recent_day_zhqds()
     most_recent_day_timestamps = db_util.get_most_recent_day_timestamps()
 
+    # 查询连板高度和对应的交易日
+    db_util.query_highest_from_db()
+    trade_day = db_util.get_trade_day()
+    highest = db_util.get_highest()
+
     return render_template('echarts.html', timestamps=timestamps, zhqds=zhqds,
                            most_recent_day_zhqds=most_recent_day_zhqds,
-                           most_recent_day_timestamps=most_recent_day_timestamps)
+                           most_recent_day_timestamps=most_recent_day_timestamps,
+                           trade_day=trade_day, highest=highest)
 
 
 @app.route('/cyberpunk')
