@@ -43,3 +43,4 @@ class ConfigHelper(object):
         self.db_table_name_zhqd_unique = conf.get("DB_TABLE_NAME", 'ZHQD_UNIQUE')
         self.db_table_name_da_ban = conf.get("DB_TABLE_NAME", 'DA_BAN_LIST')
         self.db_tn_tdx_lb = conf.get("DB_TABLE_NAME", 'TDX_LIAN_BAN')
+        self.db_tn_tdx_history_zdt = conf.get("DB_TABLE_NAME", 'TDX_HISTORY_ZDT')

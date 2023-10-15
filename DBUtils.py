@@ -99,23 +99,24 @@ class DBUtils:
         self.__connect_to_db()
 
         # 查询出数据之后按照 index 值降序排序，并获取前60条
-        sql = ("select trade_day, highest from %s ORDER BY trade_day ASC LIMIT 100" % self.config_helper.db_tn_tdx_lb)
+        sql = ("select trade_day, high_lianban from %s ORDER BY trade_day DESC LIMIT 300" %
+               self.config_helper.db_tn_tdx_history_zdt)
 
         try:
             self.cursor.execute(sql)
         except Exception as e:
-            logging.log(logging.ERROR, "去前置0后的timestamps: " + str(e))
+            logging.log(logging.ERROR, "query_highest_from_db() error: " + str(e))
 
         self.highest.clear()
         self.trade_day.clear()
 
         results = self.cursor.fetchall()
         for result in results:
-            # 去前置0的操作
-            tm = result[0].timetuple()
-            mon_day = str(tm.tm_mon) + '-' + str(tm.tm_mday)
-            self.trade_day.append(mon_day)
+            self.trade_day.append(result[0])
             self.highest.append(result[1])
+
+        self.trade_day.reverse()
+        self.highest.reverse()
 
         self.conn.close()
 

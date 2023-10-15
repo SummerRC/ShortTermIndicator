@@ -26,8 +26,8 @@ class HighestLineChart {
             },
             yAxis: {
                 type: 'value',
-                min: 0,
-                max: 10,
+                min: 1,
+                max: 13,
                 // 强制间隔是1
                 interval: 1,
                 // 显示次分割线
