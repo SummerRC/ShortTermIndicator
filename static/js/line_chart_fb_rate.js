@@ -1,5 +1,5 @@
-// 连板高度的折线图表
-class FbRateLineChart {
+// 历史封板率的折线图表
+class HighestLineChart {
     constructor(chart_title, trade_day, highest) {
         this.chart_title = chart_title
         this.x_data = trade_day
@@ -12,7 +12,7 @@ class FbRateLineChart {
             },
             tooltip: {
                 trigger: 'item',
-                formatter: '日期: {b} <br/>封板率: {c}'       //鼠标放在该点，显示日期和封板率
+                formatter: '日期: {b} <br/>高度: {c}'       //鼠标放在该点，显示日期和情绪
             },
             xAxis: {
                 data: this.x_data,
@@ -22,15 +22,15 @@ class FbRateLineChart {
                 },
                 axisLabel: {
                     interval: 'auto',      //0强制显示所有标签
-                    rotate: 90,            //旋转之后能都显示得下，但有点丑
+                    rotate: 90,         //旋转之后能都显示得下，但有点丑
                 },
             },
             yAxis: {
                 type: 'value',
-                min: 50,
-                max: 90,
+                min: 1,
+                max: 13,
                 // 强制间隔是1
-                interval: 10,
+                interval: 1,
                 // 显示次分割线
                 minorSplitLine: {
                     show: false,

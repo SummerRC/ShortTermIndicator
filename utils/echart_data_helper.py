@@ -12,25 +12,17 @@ class EchartsDataHelper:
 
         # 查询最近40个交易日的综合强度数据
         db_util.query_zhqd_timestamps_from_db()
-        timestamps = db_util.get_timestamps()
-        zhqds = db_util.get_zhqds()
-
         # 查询最近一个交易日当天的综合强度数据
-        db_util.query_most_recent_trade_day_zhqds_from_db()
-        most_recent_day_zhqds = db_util.get_most_recent_day_zhqds()
-        most_recent_day_timestamps = db_util.get_most_recent_day_timestamps()
-
+        db_util.query_most_recent_five_day_zhqds_from_db()
         # 查询连板高度和对应的交易日
         db_util.query_highest_from_db()
-        trade_day = db_util.get_trade_day()
-        highest = db_util.get_highest()
 
         # 关闭数据库
         db_util.close_db()
 
-        json = {'timestamps': timestamps, 'zhqds': zhqds,
-                'most_recent_day_zhqds': most_recent_day_zhqds,
-                'most_recent_day_timestamps': most_recent_day_timestamps,
-                'trade_day': trade_day, 'highest': highest}
+        json = {'timestamps': db_util.timestamps, 'zhqds': db_util.zhqds,
+                'most_recent_day_zhqds': db_util.most_recent_trade_day_zhqds,
+                'most_recent_day_timestamps': db_util.most_recent_trade_day_timestamps,
+                'trade_day': db_util.trade_day, 'highest': db_util.highest, 'rate_fengban':db_util.rate_fengban}
 
         return json

@@ -5,6 +5,7 @@ class ChartData {
     most_recent_day_timestamps = []
     trade_day = []
     highest = []
+    rate_fb = []
 
     constructor() {}
 

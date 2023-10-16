@@ -15,6 +15,7 @@ class DBUtils:
 
     highest = []
     trade_day = []
+    rate_fengban = []
 
     def __init__(self):
         self.cursor = None
@@ -30,11 +31,11 @@ class DBUtils:
     def close_db(self):
         self.conn.close()
 
-    # 查询的是最近40个交易日的数据
+    # 查询的是最近100个交易日的数据
     def query_zhqd_timestamps_from_db(self):
-        # 查询出数据之后按照 index 值降序排序，并获取前60条
+        # 查询出数据之后按照 index 值降序排序，并获取前40条
         sql = "select zhqd, timestamp, is_trade_time, data_crawl_timestamp, id from %s \
-                     WHERE is_trade_time = 0 ORDER BY id DESC LIMIT 40 " % self.config_helper.db_table_name_zhqd_unique
+                     WHERE is_trade_time = 0 ORDER BY id DESC LIMIT 100 " % self.config_helper.db_table_name_zhqd_unique
 
         try:
             self.cursor.execute(sql)
@@ -62,8 +63,8 @@ class DBUtils:
         self.zhqd_timestamps.reverse()
 
     # 查询的是最近一个交易日的数据，以分钟计算
-    def query_most_recent_trade_day_zhqds_from_db(self):
-        json_data = StockUtils.get_most_three_trade_day()
+    def query_most_recent_five_day_zhqds_from_db(self):
+        json_data = StockUtils.get_most_five_trade_day()
 
         # 查询出数据之后按照 index 值降序排序，并获取前60条
         sql = ("select zhqd, timestamp, is_trade_time, data_crawl_timestamp, id from %s \
@@ -90,7 +91,7 @@ class DBUtils:
     # 查询最高板
     def query_highest_from_db(self):
         # 查询出数据之后按照 index 值降序排序，并获取前60条
-        sql = ("select trade_day, high_lianban from %s ORDER BY trade_day DESC LIMIT 300" %
+        sql = ("select trade_day, high_lianban, rate_fengban from %s ORDER BY trade_day DESC LIMIT 200" %
                self.config_helper.db_tn_tdx_history_zdt)
 
         try:
@@ -100,29 +101,15 @@ class DBUtils:
 
         self.highest.clear()
         self.trade_day.clear()
+        self.rate_fengban.clear()
 
         results = self.cursor.fetchall()
         for result in results:
             self.trade_day.append(result[0])
             self.highest.append(result[1])
+            self.rate_fengban.append(result[2])
 
         self.trade_day.reverse()
         self.highest.reverse()
+        self.rate_fengban.reverse()
 
-    def get_zhqds(self):
-        return self.zhqds
-
-    def get_timestamps(self):
-        return self.timestamps
-
-    def get_most_recent_day_zhqds(self):
-        return self.most_recent_trade_day_zhqds
-
-    def get_most_recent_day_timestamps(self):
-        return self.most_recent_trade_day_timestamps
-
-    def get_trade_day(self):
-        return self.trade_day
-
-    def get_highest(self):
-        return self.highest

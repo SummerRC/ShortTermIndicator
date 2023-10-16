@@ -91,14 +91,14 @@ class StockUtils:
 
     # 获取最近的3个交易日的日期，如果今天是交易日就包括今天
     @staticmethod
-    def get_most_three_trade_day():
+    def get_most_five_trade_day():
         if_trade_time = StockUtils.today_is_a_stock_trade_day() & StockUtils.time_is_after_trade()
         if if_trade_time:
             end_day = datetime.datetime.now().strftime('%Y-%m-%d')
             end_time = datetime.datetime.strptime(str(end_day) + '15:00', '%Y-%m-%d%H:%M')
 
             """获取前面的工作日"""
-            previous_day = find_workday(-3)
+            previous_day = find_workday(-5)
             start_time = datetime.datetime.strptime(str(previous_day) + '9:15', '%Y-%m-%d%H:%M')
 
         else:
@@ -106,7 +106,7 @@ class StockUtils:
             end_time = datetime.datetime.strptime(str(end_day) + '15:00', '%Y-%m-%d%H:%M')
 
             """获取前面的工作日"""
-            previous_day = find_workday(-4)
+            previous_day = find_workday(-6)
             start_time = datetime.datetime.strptime(str(previous_day) + '9:15', '%Y-%m-%d%H:%M')
 
         json_data = {'start_time': start_time, 'end_time': end_time}

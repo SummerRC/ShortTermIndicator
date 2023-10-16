@@ -45,17 +45,17 @@ class MotionStrengthLineChart {
                     color: 'black'
                 }
             },
-            //缩放相关，未完成
-            dataZoom: [
-                {
-                    show: true,
-                    type: 'inside',
-                    filterMode: 'none',
-                    yAxisIndex: [0],
-                    startValue: 0,
-                    endValue: 100
-                }
-            ],
+            // //缩放相关，未完成
+            // dataZoom: [
+            //     {
+            //         show: true,
+            //         type: 'inside',
+            //         filterMode: 'none',
+            //         yAxisIndex: [0],
+            //         startValue: 0,
+            //         endValue: 100
+            //     }
+            // ],
             series: [
                 {
                     data: this.y_data,
