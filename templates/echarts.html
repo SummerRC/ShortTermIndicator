@@ -2,9 +2,10 @@
 <html lang="zh">
 <head>
     <meta charset="utf-8"/>
-    <title>ECharts 短线指标</title>
+    <title>短线指标</title>
     <!-- 引入 ECharts 文件 -->
     <script src="../static/js/echarts.js"></script>
+    <script src="../static/js/chart_data.js"></script>
     <!-- 引入bootstrap-->
     <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.staticfile.org/jquery/2.0.0/jquery.min.js"></script>
@@ -12,49 +13,30 @@
 </head>
 
 <!--  先拿到从flask传来的数据-->
-<script type="text/javascript">
-    timestamps = []
-    zhqds = []
-    most_recent_day_zhqds = []
-    most_recent_day_timestamps = []
-    trade_day = []
-    highest = []
-</script>
+<script type="text/javascript" >let chartData = new ChartData(); </script>
 
-{% for timestamp in timestamps %}
-<script type="text/javascript">
-    timestamps.push('{{timestamp}}');
-</script>
+{% for timestamp in json['timestamps'] %}
+<script type="text/javascript"> chartData.timestamps.push('{{timestamp}}');</script>
 {% endfor %}
 
-{% for zhqd in zhqds %}
-<script type="text/javascript">
-    zhqds.push('{{zhqd}}');
-</script>
+{% for zhqd in json['zhqds'] %}
+<script type="text/javascript"> chartData.zhqds.push('{{zhqd}}');</script>
 {% endfor %}
 
-{% for timestamp in most_recent_day_timestamps %}
-<script type="text/javascript">
-    most_recent_day_timestamps.push('{{timestamp}}');
-</script>
+{% for timestamp in json['most_recent_day_timestamps'] %}
+<script type="text/javascript"> chartData.most_recent_day_timestamps.push('{{timestamp}}'); </script>
 {% endfor %}
 
-{% for zhqd in most_recent_day_zhqds %}
-<script type="text/javascript">
-    most_recent_day_zhqds.push('{{zhqd}}');
-</script>
+{% for zhqd in json['most_recent_day_zhqds'] %}
+<script type="text/javascript"> chartData.most_recent_day_zhqds.push('{{zhqd}}'); </script>
 {% endfor %}
 
-{% for day in trade_day %}
-<script type="text/javascript">
-    trade_day.push('{{day}}');
-</script>
+{% for day in json['trade_day']  %}
+<script type="text/javascript"> chartData.trade_day.push('{{day}}'); </script>
 {% endfor %}
 
-{% for high in highest %}
-<script type="text/javascript">
-    highest.push('{{high}}');
-</script>
+{% for high in json['highest'] %}
+<script type="text/javascript"> chartData.highest.push('{{high}}');</script>
 {% endfor %}
 
 <body>
@@ -74,21 +56,22 @@
 <script src="../static/js/line_chart_highest.js"></script>
 <script type="text/javascript">
     //近30个交易日的市场情绪
-    let chart_30day = new MotionStrengthLineChart("市场情绪", timestamps, zhqds)
+    let chart_30day = new MotionStrengthLineChart("市场情绪", chartData.timestamps, chartData.zhqds);
     // 基于准备好的dom，初始化市场情绪echarts实例
     motion_strength_chart = echarts.init(document.getElementById('motion_strength'));
     // 使用刚指定的配置项和数据显示图表。
     motion_strength_chart.setOption(chart_30day.option);
 
     //近最近1个交易日的市场情绪
-    let chart_last_trade_day = new MotionStrengthLineChart("最近一个交易日情绪", most_recent_day_timestamps, most_recent_day_zhqds)
+    let chart_last_trade_day = new MotionStrengthLineChart("最近三个交易日情绪", chartData.most_recent_day_timestamps,
+        chartData.most_recent_day_zhqds)
     // 基于准备好的dom，初始化市场情绪echarts实例
     last_trade_day_motion_strength_chart = echarts.init(document.getElementById('last_trade_day_motion_strength'));
     // 使用刚指定的配置项和数据显示图表。
     last_trade_day_motion_strength_chart.setOption(chart_last_trade_day.option);
 
     //近30个交易日的连板高度情况
-    let chart_lian_ban = new HighestLineChart("历史连板高度", trade_day, highest)
+    let chart_lian_ban = new HighestLineChart("历史连板高度", chartData.trade_day, chartData.highest)
     // 基于准备好的dom，初始化市场情绪echarts实例
     lian_ban_highest_chart = echarts.init(document.getElementById('lian_ban_highest'));
     // 使用刚指定的配置项和数据显示图表。

@@ -6,7 +6,7 @@ from flask import (
 )
 
 from DBUtils import DBUtils
-
+from utils.echart_data_helper import EchartsDataHelper
 
 app = Flask(__name__)
 
@@ -18,26 +18,8 @@ def index():
 
 @app.route('/echarts')
 def echarts():
-    db_util = DBUtils()
-    # 查询最近40个交易日的综合强度数据
-    db_util.query_zhqd_timestamps_from_db()
-    timestamps = db_util.get_timestamps()
-    zhqds = db_util.get_zhqds()
-
-    # 查询最近一个交易日当天的综合强度数据
-    db_util.query_most_recent_trade_day_zhqds_from_db()
-    most_recent_day_zhqds = db_util.get_most_recent_day_zhqds()
-    most_recent_day_timestamps = db_util.get_most_recent_day_timestamps()
-
-    # 查询连板高度和对应的交易日
-    db_util.query_highest_from_db()
-    trade_day = db_util.get_trade_day()
-    highest = db_util.get_highest()
-
-    return render_template('echarts.html', timestamps=timestamps, zhqds=zhqds,
-                           most_recent_day_zhqds=most_recent_day_zhqds,
-                           most_recent_day_timestamps=most_recent_day_timestamps,
-                           trade_day=trade_day, highest=highest)
+    data_helper = EchartsDataHelper()
+    return render_template('echarts.html', json=data_helper.get_echarts_json_data())
 
 
 def get_absolute_file_path(filename):

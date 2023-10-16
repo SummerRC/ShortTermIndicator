@@ -62,6 +62,17 @@ class StockUtils:
         n_time = datetime.datetime.now()
         return n_time >= time_13
 
+    # 仅用于判定当前时间是在9:15开盘之前还是之后
+    @staticmethod
+    def time_is_after_trade():
+        # A股交易时间范围
+        n_date = datetime.datetime.now().date()
+        time_start_trade = datetime.datetime.strptime(str(n_date) + '9:15', '%Y-%m-%d%H:%M')
+        # 当前时间
+        n_time = datetime.datetime.now()
+        return n_time >= time_start_trade
+
+
     # 获取最近的交易日的日期，如果今天是交易日就返回今天
     @staticmethod
     def get_most_recent_trade_day():
@@ -78,6 +89,28 @@ class StockUtils:
                 # todo 找到周五，待处理
                 return 0
 
+    # 获取最近的3个交易日的日期，如果今天是交易日就包括今天
+    @staticmethod
+    def get_most_three_trade_day():
+        if_trade_time = StockUtils.today_is_a_stock_trade_day() & StockUtils.time_is_after_trade()
+        if if_trade_time:
+            end_day = datetime.datetime.now().strftime('%Y-%m-%d')
+            end_time = datetime.datetime.strptime(str(end_day) + '15:00', '%Y-%m-%d%H:%M')
+
+            """获取前面的工作日"""
+            previous_day = find_workday(-3)
+            start_time = datetime.datetime.strptime(str(previous_day) + '9:15', '%Y-%m-%d%H:%M')
+
+        else:
+            end_day = find_workday(-1)
+            end_time = datetime.datetime.strptime(str(end_day) + '15:00', '%Y-%m-%d%H:%M')
+
+            """获取前面的工作日"""
+            previous_day = find_workday(-4)
+            start_time = datetime.datetime.strptime(str(previous_day) + '9:15', '%Y-%m-%d%H:%M')
+
+        json_data = {'start_time': start_time, 'end_time': end_time}
+        return json_data
 
 
 

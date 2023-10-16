@@ -1,7 +1,4 @@
-
 import logging
-from datetime import datetime
-
 import pymysql
 
 from utils.config_helper import ConfigHelper
@@ -20,18 +17,21 @@ class DBUtils:
     trade_day = []
 
     def __init__(self):
+        self.cursor = None
+        self.conn = None
         self.config_helper = ConfigHelper()
 
-    def __connect_to_db(self):
+    def connect_to_db(self):
         self.conn = pymysql.connect(host=self.config_helper.db_address, port=self.config_helper.db_port,
                                     user=self.config_helper.db_user, password=self.config_helper.db_password,
                                     database=self.config_helper.db_name, charset=self.config_helper.db_charset)
         self.cursor = self.conn.cursor()
 
+    def close_db(self):
+        self.conn.close()
+
     # 查询的是最近40个交易日的数据
     def query_zhqd_timestamps_from_db(self):
-        self.__connect_to_db()
-
         # 查询出数据之后按照 index 值降序排序，并获取前60条
         sql = "select zhqd, timestamp, is_trade_time, data_crawl_timestamp, id from %s \
                      WHERE is_trade_time = 0 ORDER BY id DESC LIMIT 40 " % self.config_helper.db_table_name_zhqd_unique
@@ -61,24 +61,19 @@ class DBUtils:
         self.timestamps.reverse()
         self.zhqd_timestamps.reverse()
 
-        self.conn.close()
-
     # 查询的是最近一个交易日的数据，以分钟计算
     def query_most_recent_trade_day_zhqds_from_db(self):
-        self.__connect_to_db()
+        json_data = StockUtils.get_most_three_trade_day()
 
-        most_recent_trade_day = StockUtils.get_most_recent_trade_day()
-        start_time = datetime.strptime(str(most_recent_trade_day) + '9:15', '%Y-%m-%d%H:%M')
-        end_time = datetime.strptime(str(most_recent_trade_day) + '15:00', '%Y-%m-%d%H:%M')
         # 查询出数据之后按照 index 值降序排序，并获取前60条
         sql = ("select zhqd, timestamp, is_trade_time, data_crawl_timestamp, id from %s \
              WHERE timestamp BETWEEN '%s' AND '%s'" %
-               (self.config_helper.db_table_name_zhqd_unique, start_time, end_time))
+               (self.config_helper.db_table_name_zhqd_unique, json_data.get('start_time'), json_data.get('end_time')))
 
         try:
             self.cursor.execute(sql)
         except Exception as e:
-            print(e)
+            logging.log(logging.ERROR, str(e))
 
         self.most_recent_trade_day_zhqds.clear()
         self.most_recent_trade_day_timestamps.clear()
@@ -92,12 +87,8 @@ class DBUtils:
             logging.log(logging.DEBUG, "zhqd: " + str(result[0]))
             logging.log(logging.DEBUG, "去日期后的timestamps: " + timestamp)
 
-        self.conn.close()
-
     # 查询最高板
     def query_highest_from_db(self):
-        self.__connect_to_db()
-
         # 查询出数据之后按照 index 值降序排序，并获取前60条
         sql = ("select trade_day, high_lianban from %s ORDER BY trade_day DESC LIMIT 300" %
                self.config_helper.db_tn_tdx_history_zdt)
@@ -117,8 +108,6 @@ class DBUtils:
 
         self.trade_day.reverse()
         self.highest.reverse()
-
-        self.conn.close()
 
     def get_zhqds(self):
         return self.zhqds
