@@ -6,8 +6,8 @@ from static.db.ecarts_helper import EchartsHelper
 
 class EchartsDataHelper:
 
-    def get_echarts_json_data(self, is_more=True):
-        echarts_helper = EchartsHelper(is_more)
+    def get_echarts_json_data(self, is_more_data):
+        echarts_helper = EchartsHelper(is_more_data)
         echarts_helper.connect_to_db()
 
         # 查询最近40个交易日的综合强度数据

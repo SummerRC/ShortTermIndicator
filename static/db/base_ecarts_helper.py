@@ -18,15 +18,15 @@ class BaseEchartsHelper:
     trade_day = []
     rate_fengban = []
 
-    def __init__(self, is_more):
+    def __init__(self, is_more_data):
         self.cursor = None
         self.conn = None
         self.config_helper = ConfigHelper()
-        self.is_more = is_more
+        self.is_more_data = is_more_data
         self.__init_config()
 
     def __init_config(self):
-        if self.is_more:
+        if self.is_more_data:
             self.num_zhqd = self.config_helper.num_zhqd_more
             self.num_recent_zhqd = self.config_helper.num_recent_zhqd_more
             self.num_highest = self.config_helper.num_highest_more

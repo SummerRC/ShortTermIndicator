@@ -45,10 +45,20 @@ class ConfigHelper(object):
         self.db_tn_tdx_lb = conf.get("DB_TABLE_NAME", 'TDX_LIAN_BAN')
         self.db_tn_tdx_history_zdt = conf.get("DB_TABLE_NAME", 'TDX_HISTORY_ZDT')
 
+        # 展示单行或者多行
         self.num_zhqd_more = conf.getint("DB_NUMS", 'NUM_ZHQD_MORE')
         self.num_zhqd_less = conf.getint("DB_NUMS", 'NUM_ZHQD_LESS')
         self.num_recent_zhqd_more = conf.getint("DB_NUMS", 'NUM_RECENT_ZHQD_MORE')
         self.num_recent_zhqd_less = conf.getint("DB_NUMS", 'NUM_RECENT_ZHQD_LESS')
         self.num_highest_more = conf.getint("DB_NUMS", 'NUM_HIGHEST_MORE')
         self.num_highest_less = conf.getint("DB_NUMS", 'NUM_HIGHEST_LESS')
+
+        # 登陆相关
+        self.need_login = conf.getboolean("LOGIN", "NEED_LOGIN")
+        self.user_name = conf.get("LOGIN", "USER_NAME")
+        self.password = conf.get("LOGIN", "PASSWORD")
+        self.temp_user = conf.get("LOGIN", "TEMP_USER")
+        self.temp_user_password = conf.get("LOGIN", "TEMP_USER_PASSWORD")
+
+
 

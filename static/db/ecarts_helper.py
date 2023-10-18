@@ -9,8 +9,8 @@ from utils.stock_utils import StockUtils
 
 class EchartsHelper(BaseEchartsHelper):
 
-    def __init__(self, is_more):
-        super().__init__(is_more)
+    def __init__(self, is_more_data):
+        super().__init__(is_more_data)
 
     # 查询的是最近100个交易日的数据
     def query_zhqd_timestamps_from_db(self):
