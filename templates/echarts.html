@@ -44,10 +44,9 @@
 <script type="text/javascript"> chartData.rate_fb.push('{{rate}}');</script>
 {% endfor %}
 
-
-
 <body>
-<div class=".container-fluid">
+<div class=".container-fluid" style="margin-top: 32px; margin-bottom: 32px">
+    <div class="row" style="height:32px;"></div>
     <!--    历史市场情绪、最近三个交易日的市场情绪-->
     <div class="row">
         <!-- 为 ECharts 准备一个定义了宽高的 DOM -->
@@ -69,6 +68,7 @@
 <!-- 引入 定义好ECharts样式的line_chart 文件 -->
 <script src="../static/js/line_chart.js"></script>
 <script src="../static/js/line_chart_highest.js"></script>
+<script src="../static/js/line_chart_for_recent_day.js"></script>
 <script type="text/javascript">
     //近100个交易日的市场情绪
     let chart_100day = new MotionStrengthLineChart("市场情绪", chartData.timestamps, chartData.zhqds);
@@ -78,7 +78,7 @@
     motion_strength_chart.setOption(chart_100day.option);
 
     //近最近5个交易日的市场情绪
-    let chart_last_trade_day = new MotionStrengthLineChart("最近五个交易日情绪", chartData.most_recent_day_timestamps,
+    let chart_last_trade_day = new MotionStrengthRecentDay("最近五个交易日情绪", chartData.most_recent_day_timestamps,
         chartData.most_recent_day_zhqds)
     // 基于准备好的dom，初始化市场情绪echarts实例
     last_trade_day_motion_strength_chart = echarts.init(document.getElementById('last_trade_day_motion_strength'));
@@ -98,7 +98,6 @@
     rate_fb_chart = echarts.init(document.getElementById('feng_ban_rate'));
     // 使用刚指定的配置项和数据显示图表。
     rate_fb_chart.setOption(chart_fb_rate.option);
-
 </script>
 </body>
 </html>
