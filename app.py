@@ -53,7 +53,7 @@ if __name__ == '__main__':
     logging.getLogger().setLevel(logging.INFO)
     app.run()
 
-# http://flask.pocoo.org/snippets/category/authentication/
+
 def authenticate():
     """Sends a 401 response that enables basic auth"""
     return Response("<script>alert('Fail to login: basic auth for ScrapydWeb has been enabled');</script>",
