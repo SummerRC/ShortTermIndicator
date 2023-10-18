@@ -34,7 +34,7 @@ class ConfigHelper(object):
             config_db_name = "DEV_DATABASE"
 
         self.db_address = conf.get(config_db_name, 'HOST')
-        self.db_port = int(conf.get(config_db_name, 'PORT'))
+        self.db_port = conf.getint(config_db_name, 'PORT')
         self.db_user = conf.get(config_db_name, 'USER')
         self.db_password = conf.get(config_db_name, 'PASSWORD')
         self.db_name = conf.get(config_db_name, 'DBNAME')
@@ -44,3 +44,11 @@ class ConfigHelper(object):
         self.db_table_name_da_ban = conf.get("DB_TABLE_NAME", 'DA_BAN_LIST')
         self.db_tn_tdx_lb = conf.get("DB_TABLE_NAME", 'TDX_LIAN_BAN')
         self.db_tn_tdx_history_zdt = conf.get("DB_TABLE_NAME", 'TDX_HISTORY_ZDT')
+
+        self.num_zhqd_more = conf.getint("DB_NUMS", 'NUM_ZHQD_MORE')
+        self.num_zhqd_less = conf.getint("DB_NUMS", 'NUM_ZHQD_LESS')
+        self.num_recent_zhqd_more = conf.getint("DB_NUMS", 'NUM_RECENT_ZHQD_MORE')
+        self.num_recent_zhqd_less = conf.getint("DB_NUMS", 'NUM_RECENT_ZHQD_LESS')
+        self.num_highest_more = conf.getint("DB_NUMS", 'NUM_HIGHEST_MORE')
+        self.num_highest_less = conf.getint("DB_NUMS", 'NUM_HIGHEST_LESS')
+

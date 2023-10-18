@@ -4,8 +4,6 @@ import logging
 from flask import (
     Flask, url_for, render_template
 )
-
-from DBUtils import DBUtils
 from utils.echart_data_helper import EchartsDataHelper
 
 app = Flask(__name__)
@@ -13,13 +11,14 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return echarts()
+    data_helper = EchartsDataHelper()
+    return render_template('echarts_row_two.html', json=data_helper.get_echarts_json_data())
 
 
 @app.route('/echarts')
 def echarts():
     data_helper = EchartsDataHelper()
-    return render_template('echarts.html', json=data_helper.get_echarts_json_data())
+    return render_template('echarts.html', json=data_helper.get_echarts_json_data(True))
 
 
 def get_absolute_file_path(filename):

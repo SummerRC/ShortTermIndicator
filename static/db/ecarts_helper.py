@@ -1,46 +1,28 @@
+# -*- coding: utf-8 -*-
+# @Time : 2023/10/18 12:03
+# @Author : SummerRC
 import logging
-import pymysql
 
-from utils.config_helper import ConfigHelper
+from static.db.base_ecarts_helper import BaseEchartsHelper
 from utils.stock_utils import StockUtils
 
 
-class DBUtils:
-    zhqds = []
-    timestamps = []
-    zhqd_timestamps = []
+class EchartsHelper(BaseEchartsHelper):
 
-    most_recent_trade_day_zhqds = []
-    most_recent_trade_day_timestamps = []
-
-    highest = []
-    trade_day = []
-    rate_fengban = []
-
-    def __init__(self):
-        self.cursor = None
-        self.conn = None
-        self.config_helper = ConfigHelper()
-
-    def connect_to_db(self):
-        self.conn = pymysql.connect(host=self.config_helper.db_address, port=self.config_helper.db_port,
-                                    user=self.config_helper.db_user, password=self.config_helper.db_password,
-                                    database=self.config_helper.db_name, charset=self.config_helper.db_charset)
-        self.cursor = self.conn.cursor()
-
-    def close_db(self):
-        self.conn.close()
+    def __init__(self, is_more):
+        super().__init__(is_more)
 
     # 查询的是最近100个交易日的数据
     def query_zhqd_timestamps_from_db(self):
         # 查询出数据之后按照 index 值降序排序，并获取前40条
-        sql = "select zhqd, timestamp, is_trade_time, data_crawl_timestamp, id from %s \
-                     WHERE is_trade_time = 0 ORDER BY id DESC LIMIT 100 " % self.config_helper.db_table_name_zhqd_unique
+        sql = ("select zhqd, timestamp, is_trade_time, data_crawl_timestamp, id from %s \
+                     WHERE is_trade_time = 0 ORDER BY id DESC LIMIT %s " %
+               (self.config_helper.db_table_name_zhqd_unique, self.num_zhqd))
 
         try:
             self.cursor.execute(sql)
         except Exception as e:
-            print(e)
+            logging.log(logging.ERROR, str(e))
 
         self.zhqds.clear()
         self.timestamps.clear()
@@ -64,7 +46,7 @@ class DBUtils:
 
     # 查询的是最近一个交易日的数据，以分钟计算
     def query_most_recent_five_day_zhqds_from_db(self):
-        json_data = StockUtils.get_most_five_trade_day()
+        json_data = StockUtils.get_most_num_trade_day(self.num_recent_zhqd)
 
         # 查询出数据之后按照 index 值降序排序，并获取前60条
         sql = ("select zhqd, timestamp, is_trade_time, data_crawl_timestamp, id from %s \
@@ -88,11 +70,11 @@ class DBUtils:
             logging.log(logging.DEBUG, "zhqd: " + str(result[0]))
             logging.log(logging.DEBUG, "去日期后的timestamps: " + timestamp)
 
-    # 查询最高板
+    # 查询最高板、封板率
     def query_highest_from_db(self):
         # 查询出数据之后按照 index 值降序排序，并获取前60条
-        sql = ("select trade_day, high_lianban, rate_fengban from %s ORDER BY trade_day DESC LIMIT 200" %
-               self.config_helper.db_tn_tdx_history_zdt)
+        sql = ("select trade_day, high_lianban, rate_fengban from %s ORDER BY trade_day DESC LIMIT %s" %
+               (self.config_helper.db_tn_tdx_history_zdt, self.num_highest))
 
         try:
             self.cursor.execute(sql)
