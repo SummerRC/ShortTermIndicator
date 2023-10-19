@@ -16,6 +16,14 @@
 <!--  先拿到从flask传来的数据-->
 <script type="text/javascript" >let chartData = new ChartData(); </script>
 
+{% for motion in json['index_motions'] %}
+<script type="text/javascript"> chartData.index_motions.push('{{motion}}');</script>
+{% endfor %}
+
+{% for timestamp in json['index_timestamps'] %}
+<script type="text/javascript"> chartData.index_timestamps.push('{{timestamp}}');</script>
+{% endfor %}
+
 {% for timestamp in json['timestamps'] %}
 <script type="text/javascript"> chartData.timestamps.push('{{timestamp}}');</script>
 {% endfor %}
@@ -46,8 +54,7 @@
 
 <body>
 <div class=".container-fluid" style="margin-top: 32px; margin-bottom: 32px">
-    <div class="row" style="height:32px;"></div>
-    <!--    历史市场情绪、最近三个交易日的市场情绪-->
+    <!--    历史市场综合强度、最近三个交易日的市场综合强度-->
     <div class="row">
         <!-- 为 ECharts 准备一个定义了宽高的 DOM -->
         <div class="col-md-12" id="motion_strength" style="height:500px;"></div>
@@ -60,8 +67,15 @@
         <div class="col-lg-12" id="lian_ban_highest" style="height:500px;"></div>
     </div>
     <!--  历史封板率-->
-    <div class="row">
+    <div class="row"  style="margin-top: 32px">
         <div class="col-lg-12" id="feng_ban_rate" style="height:500px;"></div>
+    </div>
+    <!--    历史指数情绪、最近三个交易日的指数情绪-->
+    <div class="row" style="margin-top: 32px">
+        <div class="col-md-12" id="index_motion_strength" style="height:500px;"></div>
+    </div>
+    <div class="row">
+         <div class="col-md-12" id="index_last_trade_day_motion_strength" style="height:500px;"></div>
     </div>
 </div>
 
@@ -70,15 +84,29 @@
 <script src="../static/js/line_chart_highest.js"></script>
 <script src="../static/js/line_chart_for_recent_day.js"></script>
 <script type="text/javascript">
-    //近100个交易日的市场情绪
-    let chart_100day = new MotionStrengthLineChart("市场情绪", chartData.timestamps, chartData.zhqds);
+    //近50个交易日的指数情绪
+    let chart_index_motion_50day = new MotionStrengthLineChart("指数情绪", chartData.index_timestamps, chartData.index_motions);
+    // 基于准备好的dom，初始化市场情绪echarts实例
+    index_motion_chart = echarts.init(document.getElementById('index_motion_strength'));
+    // 使用刚指定的配置项和数据显示图表。
+    index_motion_chart.setOption(chart_index_motion_50day.option);
+
+   //近最近5个交易日的指数情绪
+    let chart_index_motion_recent = new MotionStrengthRecentDay("近五日指数情绪（精确到分）（数据待录入）", chartData.index_timestamps, chartData.index_motions)
+    // 基于准备好的dom，初始化市场情绪echarts实例
+    index_last_trade_day_motion_strength = echarts.init(document.getElementById('index_last_trade_day_motion_strength'));
+    // 使用刚指定的配置项和数据显示图表。
+    index_last_trade_day_motion_strength.setOption(chart_index_motion_recent.option);
+
+    //近100个交易日的市场综合强度
+    let chart_100day = new MotionStrengthLineChart("市场综合强度", chartData.timestamps, chartData.zhqds);
     // 基于准备好的dom，初始化市场情绪echarts实例
     motion_strength_chart = echarts.init(document.getElementById('motion_strength'));
     // 使用刚指定的配置项和数据显示图表。
     motion_strength_chart.setOption(chart_100day.option);
 
-    //近最近5个交易日的市场情绪
-    let chart_last_trade_day = new MotionStrengthRecentDay("最近五个交易日情绪", chartData.most_recent_day_timestamps,
+    //近最近5个交易日的市场综合强度
+    let chart_last_trade_day = new MotionStrengthRecentDay("最近五个交易日市场综合强度", chartData.most_recent_day_timestamps,
         chartData.most_recent_day_zhqds)
     // 基于准备好的dom，初始化市场情绪echarts实例
     last_trade_day_motion_strength_chart = echarts.init(document.getElementById('last_trade_day_motion_strength'));

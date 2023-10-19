@@ -46,6 +46,8 @@ class ConfigHelper(object):
         self.db_tn_tdx_history_zdt = conf.get("DB_TABLE_NAME", 'TDX_HISTORY_ZDT')
 
         # 展示单行或者多行
+        self.num_index_motion_more = conf.getint("DB_NUMS", 'NUM_INDEX_MOTION_MORE')
+        self.num_index_motion_less = conf.getint("DB_NUMS", 'NUM_INDEX_MOTION_LESS')
         self.num_zhqd_more = conf.getint("DB_NUMS", 'NUM_ZHQD_MORE')
         self.num_zhqd_less = conf.getint("DB_NUMS", 'NUM_ZHQD_LESS')
         self.num_recent_zhqd_more = conf.getint("DB_NUMS", 'NUM_RECENT_ZHQD_MORE')

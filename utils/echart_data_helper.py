@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # @Time : 2023/10/16 16:42
 # @Author : SummerRC
-from static.db.ecarts_helper import EchartsHelper
+from db.ecarts_helper import EchartsHelper
 
 
 class EchartsDataHelper:
@@ -10,6 +10,8 @@ class EchartsDataHelper:
         echarts_helper = EchartsHelper(is_more_data)
         echarts_helper.connect_to_db()
 
+        # 查询市场情绪数据
+        echarts_helper.query_index_motion_from_db()
         # 查询最近40个交易日的综合强度数据
         echarts_helper.query_zhqd_timestamps_from_db()
         # 查询最近一个交易日当天的综合强度数据
@@ -24,6 +26,7 @@ class EchartsDataHelper:
                 'most_recent_day_zhqds': echarts_helper.most_recent_trade_day_zhqds,
                 'most_recent_day_timestamps': echarts_helper.most_recent_trade_day_timestamps,
                 'trade_day': echarts_helper.trade_day, 'highest': echarts_helper.highest,
-                'rate_fengban': echarts_helper.rate_fengban}
+                'rate_fengban': echarts_helper.rate_fengban,
+                'index_motions': echarts_helper.index_motions, 'index_timestamps': echarts_helper.index_timestamps}
 
         return json
