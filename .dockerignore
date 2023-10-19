@@ -13,6 +13,7 @@ eggs/
 project.egg-info/
 dbs/
 items/
+img/
 
 venv/
 *.pyc
