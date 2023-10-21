@@ -119,7 +119,10 @@ class EchartsHelper(BaseEchartsHelper):
 
         results = self.cursor.fetchall()
         for result in results:
-            self.index_timestamps.append(result[0])
+            # 去前置0的操作
+            tm = result[0].timetuple()
+            timestamp = str(tm.tm_mon) + str(tm.tm_mday)
+            self.index_timestamps.append(timestamp)
             a = IndexMotionUtils.get_a_index_zdf(result[4])
             b = IndexMotionUtils.get_b_rate_szjs(result[1], result[2], result[3])
             c = IndexMotionUtils.get_c_trade_money(result[5])

@@ -6,7 +6,7 @@
     <!-- 引入 ECharts 文件 -->
     <script src="../static/js/echarts.min.js"></script>
     <script src="../static/js/chart_data.js"></script>
-    <script src="../static/js/line_chart_fb_rate.js"></script>
+    <script src="../static/js/opyions_style_fb_rate.js"></script>
     <!-- 引入bootstrap-->
     <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.staticfile.org/jquery/2.0.0/jquery.min.js"></script>
@@ -62,6 +62,13 @@
     <div class="row">
         <div class="col-md-12" id="last_trade_day_motion_strength" style="height:500px;"></div>
     </div>
+     <!--    历史指数情绪、最近三个交易日的指数情绪-->
+    <div class="row" >
+        <div class="col-md-12" id="index_motion_strength" style="height:500px;"></div>
+    </div>
+    <div class="row">
+         <div class="col-md-12" id="index_last_trade_day_motion_strength" style="height:500px;"></div>
+    </div>
     <!--  历史连板高度-->
     <div class="row">
         <div class="col-lg-12" id="lian_ban_highest" style="height:500px;"></div>
@@ -70,62 +77,56 @@
     <div class="row"  style="margin-top: 32px">
         <div class="col-lg-12" id="feng_ban_rate" style="height:500px;"></div>
     </div>
-    <!--    历史指数情绪、最近三个交易日的指数情绪-->
-    <div class="row" style="margin-top: 32px">
-        <div class="col-md-12" id="index_motion_strength" style="height:500px;"></div>
-    </div>
-    <div class="row">
-         <div class="col-md-12" id="index_last_trade_day_motion_strength" style="height:500px;"></div>
-    </div>
+
 </div>
 
 <!-- 引入 定义好ECharts样式的line_chart 文件 -->
-<script src="../static/js/line_chart.js"></script>
-<script src="../static/js/line_chart_highest.js"></script>
-<script src="../static/js/line_chart_for_recent_day.js"></script>
+<script src="../static/js/options_style_motion_num.js"></script>
+<script src="../static/js/options_style_highest.js"></script>
+<script src="../static/js/options_style_freezing_point.js"></script>
 <script type="text/javascript">
     //近50个交易日的指数情绪
-    let chart_index_motion_50day = new MotionStrengthLineChart("指数情绪", chartData.index_timestamps, chartData.index_motions);
+    let options_index_motion_50day = new MotionStrengthLineChart("指数情绪", chartData.index_timestamps, chartData.index_motions);
     // 基于准备好的dom，初始化市场情绪echarts实例
     index_motion_chart = echarts.init(document.getElementById('index_motion_strength'));
     // 使用刚指定的配置项和数据显示图表。
-    index_motion_chart.setOption(chart_index_motion_50day.option);
+    index_motion_chart.setOption(options_index_motion_50day.option);
 
    //近最近5个交易日的指数情绪
-    let chart_index_motion_recent = new MotionStrengthRecentDay("近五日指数情绪（精确到分）（数据待录入）", chartData.index_timestamps, chartData.index_motions)
+    let options_index_motion_recent = new FreezingPointStyleOptions("近五日指数情绪（精确到分）（数据待录入）", chartData.index_timestamps, chartData.index_motions)
     // 基于准备好的dom，初始化市场情绪echarts实例
     index_last_trade_day_motion_strength = echarts.init(document.getElementById('index_last_trade_day_motion_strength'));
     // 使用刚指定的配置项和数据显示图表。
-    index_last_trade_day_motion_strength.setOption(chart_index_motion_recent.option);
+    index_last_trade_day_motion_strength.setOption(options_index_motion_recent.option);
 
     //近100个交易日的市场综合强度
-    let chart_100day = new MotionStrengthLineChart("市场综合强度", chartData.timestamps, chartData.zhqds);
+    let options_chart_100day = new MotionStrengthLineChart("市场综合强度", chartData.timestamps, chartData.zhqds);
     // 基于准备好的dom，初始化市场情绪echarts实例
     motion_strength_chart = echarts.init(document.getElementById('motion_strength'));
     // 使用刚指定的配置项和数据显示图表。
-    motion_strength_chart.setOption(chart_100day.option);
+    motion_strength_chart.setOption(options_chart_100day.option);
 
     //近最近5个交易日的市场综合强度
-    let chart_last_trade_day = new MotionStrengthRecentDay("最近五个交易日市场综合强度", chartData.most_recent_day_timestamps,
+    let options_last_trade_day = new FreezingPointStyleOptions("最近五个交易日市场综合强度", chartData.most_recent_day_timestamps,
         chartData.most_recent_day_zhqds)
     // 基于准备好的dom，初始化市场情绪echarts实例
     last_trade_day_motion_strength_chart = echarts.init(document.getElementById('last_trade_day_motion_strength'));
     // 使用刚指定的配置项和数据显示图表。
-    last_trade_day_motion_strength_chart.setOption(chart_last_trade_day.option);
+    last_trade_day_motion_strength_chart.setOption(options_last_trade_day.option);
 
     //近200个交易日的连板高度情况
-    let chart_lian_ban = new HighestLineChart("历史连板高度", chartData.trade_day, chartData.highest)
+    let options_lian_ban = new HighestLineChart("历史连板高度", chartData.trade_day, chartData.highest)
     // 基于准备好的dom，初始化市场情绪echarts实例
     lian_ban_highest_chart = echarts.init(document.getElementById('lian_ban_highest'));
     // 使用刚指定的配置项和数据显示图表。
-    lian_ban_highest_chart.setOption(chart_lian_ban.option);
+    lian_ban_highest_chart.setOption(options_lian_ban.option);
 
     //近200个交易日的封板率
-    let chart_fb_rate = new FbRateLineChart("历史封板率", chartData.trade_day, chartData.rate_fb)
+    let options_fb_rate = new FbRateLineChart("历史封板率", chartData.trade_day, chartData.rate_fb)
     // 基于准备好的dom，初始化市场情绪echarts实例
     rate_fb_chart = echarts.init(document.getElementById('feng_ban_rate'));
     // 使用刚指定的配置项和数据显示图表。
-    rate_fb_chart.setOption(chart_fb_rate.option);
+    rate_fb_chart.setOption(options_fb_rate.option);
 </script>
 </body>
 </html>

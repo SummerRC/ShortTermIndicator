@@ -45,33 +45,35 @@ class MotionStrengthLineChart {
                     color: 'black'
                 }
             },
-            // //缩放相关，未完成
-            // dataZoom: [
-            //     {
-            //         show: true,
-            //         type: 'inside',
-            //         filterMode: 'none',
-            //         yAxisIndex: [0],
-            //         startValue: 0,
-            //         endValue: 100
-            //     }
-            // ],
-            series: [
+            //设觉映射组件，<=35显示绿色，>=65显示红色
+            visualMap: [{
+                dimension: 1,
+                show: false,
+                pieces: [{
+                    lte: 25,
+                    color: 'green'
+                },
                 {
-                    data: this.y_data,
-                    type: 'line',
-
-                    label: {
-                        // true会显示情绪强度值
-                        show: false,
-                        position: 'top',
-                        textStyle: {
-                            fontSize: 8
-                        }
-                    },
-                    colorBy: "series",
-                }
-            ]
+                    gte: 65,
+                    color: 'red'
+                }],
+                outOfRange: {
+                    color: '#5470c6'
+                },
+            }],
+            series: [{
+                data: this.y_data,
+                type: 'line',
+                label: {
+                    // true会显示情绪强度值
+                    show: false,
+                    position: 'top',
+                    textStyle: {
+                        fontSize: 8
+                    }
+                },
+                colorBy: "series",
+            }],
         };
     }
 }

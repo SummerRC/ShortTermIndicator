@@ -7,7 +7,7 @@ class FbRateLineChart {
         // 指定图表的配置项和数据
         this.option = {
             title: {
-                text: this.chart_title ,
+                text: this.chart_title,
                 left: 'center'
             },
             tooltip: {

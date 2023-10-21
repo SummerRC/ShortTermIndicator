@@ -1,8 +1,138 @@
-class MotionStrengthRecentDay {
+// 冰点、沸点样式
+class FreezingPointStyleOptions {
     constructor(chart_title, timestamps, zhqds) {
         this.chart_title = chart_title
         this.x_data = timestamps
         this.y_data = zhqds
+        // 采用覆盖法+多Y轴的方法，定义不同样式的分割线
+        this.line_75 =
+            {
+                type: 'value',
+                min: 0,
+                max: 75,
+                interval: 75,
+                splitLine:{
+                    show: true,
+                    lineStyle: {
+                        color: '#ad2521', // 分隔线颜色。
+                        width: 2
+                    }
+                },
+                //不显示标签
+                axisLabel: {
+                    show: false,
+                },
+            }
+        this.line_70 =
+            {
+                type: 'value',
+                min: 0,
+                max: 75,
+                interval: 70,
+                splitLine:{
+                    show: true,
+                    lineStyle: {
+                        color: 'white', // 分隔线颜色。
+                        width: 2
+                    }
+                },
+                //不显示标签
+                axisLabel: {
+                    show: false,
+                },
+            }
+        this.line_65 =
+            {
+                type: 'value',
+                min: 0,
+                max: 75,
+                interval: 65,
+                splitLine:{
+                    show: true,
+                    lineStyle: {
+                        color: 'pink', // 分隔线颜色。
+                        width: 2,
+                       type: 'dashed'
+                    }
+                },
+                //不显示标签
+                axisLabel: {
+                    show: false,
+                }
+            }
+        this.line_50 =
+            {
+                type: 'value',
+                min: 0,
+                max: 75,
+                interval: 50,
+                splitLine:{
+                    show: true,
+                    lineStyle: {
+                       color: 'white', // 分隔线颜色。
+                        width: 2,
+                    }
+                },
+                //不显示标签
+                axisLabel: {
+                    show: false,
+                }
+            }
+        this.line_50_twice =
+            {
+                type: 'value',
+                min: 0,
+                max: 75,
+                interval: 50,
+                splitLine:{
+                    show: true,
+                    lineStyle: {
+                       color: 'grey', // 分隔线颜色。
+                       type: 'dashed'
+                    }
+                },
+                //不显示标签
+                axisLabel: {
+                    show: false,
+                }
+            }
+        this.line_35 =
+            {
+                type: 'value',
+                min: 0,
+                max: 75,
+                interval: 35,
+                splitLine:{
+                    show: true,
+                    lineStyle: {
+                        color: '#457B6D', // 分隔线颜色。
+                        width: 2,
+                        type: 'dashed'
+                    }
+                },
+                //不显示标签
+                axisLabel: {
+                    show: false,
+                }
+            }
+        this.line_25 =
+            {
+                type: 'value',
+                min: 0,
+                max: 75,
+                interval: 25,
+                splitLine:{
+                    show: true,
+                    lineStyle: {
+                       color: '#495B71', // 分隔线颜色。
+                        width: 2
+                    }
+                },
+                //不显示标签
+                axisLabel: {
+                    show: false,
+                }
+            }
         // 指定图表的配置项和数据
         this.option = {
             title: {
@@ -23,13 +153,31 @@ class MotionStrengthRecentDay {
                     interval: 'auto',      //0强制显示所有标签
                     //rotate: 90,         //旋转之后能都显示得下，但有点丑
                 },
+                //坐标轴轴线
+                axisLine: {
+                    show: true,
+                    lineStyle: {
+                        color: 'black',
+                    }
+                }
             },
-            yAxis: {
+            yAxis: [
+                {
                 type: 'value',
                 min: 0,
                 max: 75,
                 // 强制间隔是25
                 interval: 5,
+                //分割线样式
+                splitLine:{
+                    show: false,
+                    lineStyle: {
+     	                color: ['#ccc'], // 分隔线颜色。
+     	                width: 1, // 分隔线线宽
+     	                type: 'dashed', // 线的类型
+     	                opacity: 1 // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。
+                    }
+                },
                 //设置标签样式
                 axisLabel: {
                     margin: 16,
@@ -122,7 +270,8 @@ class MotionStrengthRecentDay {
                         }
                     }
                 },
-            },
+            }, this.line_25, this.line_35, this.line_50, this.line_50_twice, this.line_65, this.line_70, this.line_75
+            ],
 
             series: [
                 {
@@ -138,8 +287,24 @@ class MotionStrengthRecentDay {
                         }
                     },
                     colorBy: "series",
-                }
-            ]
+                },
+            ],
+            //设觉映射组件，<=35显示绿色，>=65显示红色
+            visualMap: [{
+                dimension: 1,
+                show: false,
+                pieces: [{
+                    lte: 25,
+                    color: 'green'
+                },
+                {
+                    gt: 65,
+                    color: 'red'
+                }],
+                outOfRange: {
+                    color: '#5470c6'
+                },
+            }],
         };
     }
 }
