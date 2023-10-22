@@ -149,7 +149,7 @@ class EchartsHelper(BaseEchartsHelper):
                "CONCAT(date(as_index.timestamp), ' ', HOUR(as_index.timestamp), ':', "
                "MINUTE(as_index.timestamp)) "
                "where as_index.trade_money > 0  AND kpl_dabanlist.q_zrtj > 0 "
-               "ORDER BY as_index.timestamp DESC LIMIT  %s") % 720
+               "ORDER BY as_index.timestamp DESC LIMIT  %s") % self.num_motion_m
 
         try:
             self.cursor.execute(sql)

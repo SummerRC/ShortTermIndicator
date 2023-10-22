@@ -54,6 +54,8 @@ class ConfigHelper(object):
         self.num_recent_zhqd_less = conf.getint("DB_NUMS", 'NUM_RECENT_ZHQD_LESS')
         self.num_highest_more = conf.getint("DB_NUMS", 'NUM_HIGHEST_MORE')
         self.num_highest_less = conf.getint("DB_NUMS", 'NUM_HIGHEST_LESS')
+        self.num_motion_m_more = conf.getint("DB_NUMS", 'NUM_MOTION_M_MORE')
+        self.num_motion_m_less = conf.getint("DB_NUMS", 'NUM_MOTION_M_LESS')
 
         # 登陆相关
         self.need_login = conf.getboolean("LOGIN", "NEED_LOGIN")

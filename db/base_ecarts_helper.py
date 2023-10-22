@@ -39,11 +39,13 @@ class BaseEchartsHelper:
             self.num_recent_zhqd = self.config_helper.num_recent_zhqd_more
             self.num_highest = self.config_helper.num_highest_more
             self.num_index_motion = self.config_helper.num_index_motion_more
+            self.num_motion_m = self.config_helper.num_motion_m_more
         else:
             self.num_zhqd = self.config_helper.num_zhqd_less
             self.num_recent_zhqd = self.config_helper.num_recent_zhqd_less
             self.num_highest = self.config_helper.num_highest_less
             self.num_index_motion = self.config_helper.num_index_motion_less
+            self.num_motion_m = self.config_helper.num_motion_m_less
 
     def connect_to_db(self):
         self.conn = pymysql.connect(host=self.config_helper.db_address, port=self.config_helper.db_port,
