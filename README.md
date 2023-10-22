@@ -8,7 +8,7 @@
 ## 部分效果展示
 
 整体效果：
-![整体效果](./img/screen_1.png)
+![整体效果](./img/screen_1_update.png)
 
 部分指标：
 ![市场综合强度](./img/screen_2.png)
