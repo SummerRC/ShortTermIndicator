@@ -7,8 +7,13 @@ from utils.config_helper import ConfigHelper
 
 
 class BaseEchartsHelper:
+    # 指数情绪（按日）
     index_motions = []
     index_timestamps = []
+
+    # 指数情绪（按分钟）
+    index_m_motions = []
+    index_m_timestamps = []
 
     zhqds = []
     timestamps = []

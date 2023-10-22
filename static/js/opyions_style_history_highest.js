@@ -1,5 +1,5 @@
 // 历史封板率的折线图表
-class HighestLineChart {
+class OptionsHistoryHighest {
     constructor(chart_title, trade_day, highest) {
         this.chart_title = chart_title
         this.x_data = trade_day

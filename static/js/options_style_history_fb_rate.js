@@ -1,5 +1,5 @@
 // 连板高度的折线图表
-class FbRateLineChart {
+class OptionsHistoryFbRate {
     constructor(chart_title, trade_day, highest) {
         this.chart_title = chart_title
         this.x_data = trade_day
@@ -27,8 +27,8 @@ class FbRateLineChart {
             },
             yAxis: {
                 type: 'value',
-                min: 50,
-                max: 90,
+                min: 45,
+                max: 85,
                 // 强制间隔是1
                 interval: 10,
                 // 显示次分割线
@@ -58,7 +58,23 @@ class FbRateLineChart {
                     },
                     colorBy: "series",
                 }
-            ]
+            ],
+            //设觉映射组件，<=35显示绿色，>=65显示红色
+            visualMap: [{
+                dimension: 1,
+                show: false,
+                pieces: [{
+                    lte: 55,
+                    color: 'green'
+                },
+                {
+                    gte: 75,
+                    color: 'red'
+                }],
+                outOfRange: {
+                    color: '#5470c6'
+                },
+            }],
         };
     }
 }

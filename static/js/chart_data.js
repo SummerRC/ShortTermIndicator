@@ -1,7 +1,10 @@
 class ChartData {
-    // 指数情绪
+    // 指数情绪(按天)
     index_timestamps = []
     index_motions = []
+    // 指数情绪(按分)
+    index_m_timestamps = []
+    index_m_motions = []
     // 市场综合强度
     timestamps = []
     zhqds = []

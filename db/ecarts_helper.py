@@ -39,7 +39,7 @@ class EchartsHelper(BaseEchartsHelper):
             logging.log(logging.DEBUG, "zhqd: " + str(result[0]))
             logging.log(logging.DEBUG, "去前置0后的timestamps: " + timestamp)
 
-        self.zhqd_timestamps.append((self.zhqds,  self.timestamps))
+        self.zhqd_timestamps.append((self.zhqds, self.timestamps))
 
         self.zhqds.reverse()
         self.timestamps.reverse()
@@ -131,6 +131,45 @@ class EchartsHelper(BaseEchartsHelper):
         self.index_timestamps.reverse()
         self.index_motions.reverse()
 
+    # 查询最近n个交易日的的市场情绪数据
+    # 注意是分钟
+    # 2.指数情绪量化（以下数字之和,范围[-110:210] ）: (a+b+c)-(-110) * 100 / (210-(-110))
+    #       a.指数涨跌幅 * 2000 [-80:80]
+    #       b.上涨家数占比 * 100 [10:90]
+    #       c.(市场成交额 - 0.9万亿) / 1e10 [-40:40]
+    def query_index_m_motion_from_db(self):
+        sql = ("select as_index.timestamp, kpl_dabanlist.SZJS, kpl_dabanlist.XDJS, kpl_dabanlist.PPJS, "
+               "kpl_dabanlist.qscln, kpl_dabanlist.q_zrcs, kpl_dabanlist.q_zrtj, kpl_dabanlist.index_price_zr, "
+               "as_index.price_shoupan "
+               "from kpl_dabanlist inner join as_index "
+               "on "
+               "CONCAT(date(kpl_dabanlist.timestamp), ' ', HOUR(kpl_dabanlist.timestamp), ':', "
+               "MINUTE(kpl_dabanlist.timestamp)) "
+               "= "
+               "CONCAT(date(as_index.timestamp), ' ', HOUR(as_index.timestamp), ':', "
+               "MINUTE(as_index.timestamp)) "
+               "where as_index.trade_money > 0  AND kpl_dabanlist.q_zrtj > 0 "
+               "ORDER BY as_index.timestamp DESC LIMIT  %s") % 720
 
+        try:
+            self.cursor.execute(sql)
+        except Exception as e:
+            logging.log(logging.ERROR, str(e))
 
+        self.index_m_motions.clear()
+        self.index_m_timestamps.clear()
 
+        results = self.cursor.fetchall()
+        for result in results:
+            # 只保留时、分
+            timestamp = str(result[0].hour) + ":" + str(result[0].minute)
+            self.index_m_timestamps.append(timestamp)
+            index_zdf = (result[8] - result[7]) / result[7]
+            a = IndexMotionUtils.get_a_index_zdf(index_zdf)
+            b = IndexMotionUtils.get_b_rate_szjs(result[1], result[2], result[3])
+            guss_trade_money = int(result[6]) + (int(result[4]) - int(result[5]))
+            c = IndexMotionUtils.get_c_trade_money((guss_trade_money / pow(10, 8)))
+            self.index_m_motions.append(IndexMotionUtils.get_index_motion(a, b, c))
+
+        self.index_m_timestamps.reverse()
+        self.index_m_motions.reverse()

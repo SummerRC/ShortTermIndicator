@@ -6,7 +6,7 @@
     <!-- 引入 ECharts 文件 -->
     <script src="../static/js/echarts.min.js"></script>
     <script src="../static/js/chart_data.js"></script>
-    <script src="../static/js/opyions_style_fb_rate.js"></script>
+    <script src="../static/js/opyions_style_history_highest.js"></script>
     <!-- 引入bootstrap-->
     <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.staticfile.org/jquery/2.0.0/jquery.min.js"></script>
@@ -82,7 +82,7 @@
 
 <!-- 引入 定义好ECharts样式的line_chart 文件 -->
 <script src="../static/js/options_style_motion_num.js"></script>
-<script src="../static/js/options_style_highest.js"></script>
+<script src="../static/js/options_style_history_fb_rate.js"></script>
 <script src="../static/js/options_style_freezing_point.js"></script>
 <script type="text/javascript">
     //近50个交易日的指数情绪
@@ -115,14 +115,14 @@
     last_trade_day_motion_strength_chart.setOption(options_last_trade_day.option);
 
     //近200个交易日的连板高度情况
-    let options_lian_ban = new HighestLineChart("历史连板高度", chartData.trade_day, chartData.highest)
+    let options_lian_ban = new OptionsHistoryHighest("历史连板高度", chartData.trade_day, chartData.highest)
     // 基于准备好的dom，初始化市场情绪echarts实例
     lian_ban_highest_chart = echarts.init(document.getElementById('lian_ban_highest'));
     // 使用刚指定的配置项和数据显示图表。
     lian_ban_highest_chart.setOption(options_lian_ban.option);
 
     //近200个交易日的封板率
-    let options_fb_rate = new FbRateLineChart("历史封板率", chartData.trade_day, chartData.rate_fb)
+    let options_fb_rate = new OptionsHistoryFbRate("历史封板率", chartData.trade_day, chartData.rate_fb)
     // 基于准备好的dom，初始化市场情绪echarts实例
     rate_fb_chart = echarts.init(document.getElementById('feng_ban_rate'));
     // 使用刚指定的配置项和数据显示图表。
