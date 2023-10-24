@@ -12,7 +12,7 @@ class IndexMotionUtils:
     @staticmethod
     def get_index_motion(a, b, c):
         result = int(((a + b + c) - (-110)) * 100 / (210 - (-110)))
-        logging.log(logging.DEBUG, "get_index_motion: " + str(result))
+        # logging.log(logging.DEBUG, "get_index_motion: " + str(result))
         return result
 
     # 获取指数涨跌幅
@@ -20,7 +20,7 @@ class IndexMotionUtils:
     @staticmethod
     def get_a_index_zdf(shang_zhen_zhi_shu):
         result = shang_zhen_zhi_shu / 100 * 2000
-        logging.log(logging.DEBUG, "get_a_index_zdf: " + str(result))
+        # logging.log(logging.DEBUG, "get_a_index_zdf: " + str(result))
         if result > 80:
             return 80
         elif result < -80:
@@ -32,7 +32,7 @@ class IndexMotionUtils:
     @staticmethod
     def get_b_rate_szjs(SZJS, XDJS, PPJS):
         result = SZJS / (SZJS + XDJS + PPJS) * 100
-        logging.log(logging.DEBUG, "get_b_rate_szjs: " + str(result))
+        # logging.log(logging.DEBUG, "get_b_rate_szjs: " + str(result))
         if result > 90:
             return 90
         elif result < 10:
@@ -45,7 +45,7 @@ class IndexMotionUtils:
     @staticmethod
     def get_c_trade_money(total_trade_money):
         result = (total_trade_money - 9000) / 100
-        logging.log(logging.DEBUG, "get_c_trade_money: " + str(result))
+        # logging.log(logging.DEBUG, "get_c_trade_money: " + str(result))
         if result > 40:
             return 40
         elif result < -40:

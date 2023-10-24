@@ -89,7 +89,7 @@
 <script src="../static/js/options_style_freezing_point.js"></script>
 <script type="text/javascript">
     //近50个交易日的指数情绪
-    let options_index_motion_50day = new FreezingPointStyleOptions("指数情绪", chartData.index_timestamps, chartData.index_motions);
+    let options_index_motion_50day = new FreezingPointStyleOptions("指数情绪周期图", chartData.index_timestamps, chartData.index_motions);
     // 基于准备好的dom，初始化市场情绪echarts实例
     index_motion_chart = echarts.init(document.getElementById('index_motion_strength'));
     // 使用刚指定的配置项和数据显示图表。

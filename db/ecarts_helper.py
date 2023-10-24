@@ -138,7 +138,9 @@ class EchartsHelper(BaseEchartsHelper):
     #       b.上涨家数占比 * 100 [10:90]
     #       c.(市场成交额 - 0.9万亿) / 1e10 [-40:40]
     def query_index_m_motion_from_db(self):
-        sql = ("select as_index.timestamp, kpl_dabanlist.SZJS, kpl_dabanlist.XDJS, kpl_dabanlist.PPJS, "
+        json_data = StockUtils.get_most_num_trade_day(self.num_recent_zhqd)
+
+        sql = (("select as_index.timestamp, kpl_dabanlist.SZJS, kpl_dabanlist.XDJS, kpl_dabanlist.PPJS, "
                "kpl_dabanlist.qscln, kpl_dabanlist.q_zrcs, kpl_dabanlist.q_zrtj, kpl_dabanlist.index_price_zr, "
                "as_index.price_shoupan "
                "from kpl_dabanlist inner join as_index "
@@ -148,8 +150,9 @@ class EchartsHelper(BaseEchartsHelper):
                "= "
                "CONCAT(date(as_index.timestamp), ' ', HOUR(as_index.timestamp), ':', "
                "MINUTE(as_index.timestamp)) "
-               "where as_index.trade_money > 0  AND kpl_dabanlist.q_zrtj > 0 "
-               "ORDER BY as_index.timestamp DESC LIMIT  %s") % self.num_motion_m
+               "WHERE as_index.trade_money > 0  AND kpl_dabanlist.q_zrtj > 0 "
+               "AND as_index.timestamp BETWEEN '%s' AND '%s' "
+               "ORDER BY as_index.timestamp ASC") % (json_data.get('start_time'), json_data.get('end_time')))
 
         try:
             self.cursor.execute(sql)
@@ -164,12 +167,9 @@ class EchartsHelper(BaseEchartsHelper):
             # 只保留时、分
             timestamp = str(result[0].hour) + ":" + str(result[0].minute)
             self.index_m_timestamps.append(timestamp)
-            index_zdf = (result[8] - result[7]) / result[7]
+            index_zdf = (result[8] - result[7]) * 100 / result[7]
             a = IndexMotionUtils.get_a_index_zdf(index_zdf)
             b = IndexMotionUtils.get_b_rate_szjs(result[1], result[2], result[3])
             guss_trade_money = int(result[6]) + (int(result[4]) - int(result[5]))
-            c = IndexMotionUtils.get_c_trade_money((guss_trade_money / pow(10, 8)))
+            c = IndexMotionUtils.get_c_trade_money((guss_trade_money / pow(10, 4)))
             self.index_m_motions.append(IndexMotionUtils.get_index_motion(a, b, c))
-
-        self.index_m_timestamps.reverse()
-        self.index_m_motions.reverse()

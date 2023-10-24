@@ -172,7 +172,7 @@ class FreezingPointStyleOptions {
                 },
                 axisLabel: {
                     interval: 'auto',      //0强制显示所有标签
-                    //rotate: 90,         //旋转之后能都显示得下，但有点丑
+                    // rotate: 90,         //旋转之后能都显示得下，但有点丑
                 },
                 //坐标轴轴线
                 axisLine: {

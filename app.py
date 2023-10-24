@@ -31,7 +31,7 @@ def index():
     return render_template('echarts_less_data.html', json=data_helper.get_echarts_json_data(False))
 
 
-@app.route('/echarts')
+@app.route('/more_data')
 def echarts():
     data_helper = EchartsDataHelper()
     return render_template('echarts_more_data.html', json=data_helper.get_echarts_json_data(True))
