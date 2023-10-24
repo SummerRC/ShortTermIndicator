@@ -72,7 +72,6 @@ class StockUtils:
         n_time = datetime.datetime.now()
         return n_time >= time_start_trade
 
-
     # 获取最近的交易日的日期，如果今天是交易日就返回今天
     @staticmethod
     def get_most_recent_trade_day():

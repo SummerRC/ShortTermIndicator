@@ -3,11 +3,30 @@ class MotionStrengthLineChart {
         this.chart_title = chart_title
         this.x_data = timestamps
         this.y_data = zhqds
+        this.line_85 =
+            {
+                type: 'value',
+                min: 0,
+                max: 85,
+                interval: 85,
+                splitLine:{
+                    show: true,
+                    lineStyle: {
+                        color: 'white', // 分隔线颜色。
+                        width: 1
+                    }
+                },
+                //不显示标签
+                axisLabel: {
+                    show: false,
+                },
+            }
         // 指定图表的配置项和数据
         this.option = {
             title: {
                 text: this.chart_title ,
-                left: 'center'
+                left: 'center',
+                top: 30,
             },
             tooltip: {
                 trigger: 'item',
@@ -24,10 +43,10 @@ class MotionStrengthLineChart {
                     //rotate: 90,         //旋转之后能都显示得下，但有点丑
                 },
             },
-            yAxis: {
+            yAxis: [{
                 type: 'value',
                 min: 0,
-                max: 75,
+                max: 85,
                 // 强制间隔是25
                 interval: 25,
                 // 显示次分割线
@@ -42,9 +61,19 @@ class MotionStrengthLineChart {
                 axisLabel: {
                     fontWeight: 'normal',   //bold
                     fontSize: 16,
-                    color: 'black'
+                    color: 'black',
+                    formatter: function (value, index) {
+                        if (value === 85) {
+                            return ''
+                        } else {
+                            return value
+                        }
+                    },
+                },
+                axisPointer: {
+                    show:true
                 }
-            },
+            }, this.line_85],
             //设觉映射组件，<=35显示绿色，>=65显示红色
             visualMap: [{
                 dimension: 1,

@@ -5,11 +5,29 @@ class FreezingPointStyleOptions {
         this.x_data = timestamps
         this.y_data = zhqds
         // 采用覆盖法+多Y轴的方法，定义不同样式的分割线
+        this.line_85 =
+            {
+                type: 'value',
+                min: 0,
+                max: 85,
+                interval: 85,
+                splitLine:{
+                    show: true,
+                    lineStyle: {
+                        color: 'white', // 分隔线颜色。
+                        width: 2
+                    }
+                },
+                //不显示标签
+                axisLabel: {
+                    show: false,
+                },
+            }
         this.line_75 =
             {
                 type: 'value',
                 min: 0,
-                max: 75,
+                max: 85,
                 interval: 75,
                 splitLine:{
                     show: true,
@@ -27,7 +45,7 @@ class FreezingPointStyleOptions {
             {
                 type: 'value',
                 min: 0,
-                max: 75,
+                max: 85,
                 interval: 70,
                 splitLine:{
                     show: true,
@@ -45,7 +63,7 @@ class FreezingPointStyleOptions {
             {
                 type: 'value',
                 min: 0,
-                max: 75,
+                max: 85,
                 interval: 65,
                 splitLine:{
                     show: true,
@@ -64,7 +82,7 @@ class FreezingPointStyleOptions {
             {
                 type: 'value',
                 min: 0,
-                max: 75,
+                max: 85,
                 interval: 50,
                 splitLine:{
                     show: true,
@@ -82,13 +100,14 @@ class FreezingPointStyleOptions {
             {
                 type: 'value',
                 min: 0,
-                max: 75,
+                max: 85,
                 interval: 50,
                 splitLine:{
                     show: true,
                     lineStyle: {
-                       color: 'grey', // 分隔线颜色。
-                       type: 'dashed'
+                       color: '#E0E6F1', // 分隔线颜色。
+                       type: 'dashed',
+                        width: 2
                     }
                 },
                 //不显示标签
@@ -100,7 +119,7 @@ class FreezingPointStyleOptions {
             {
                 type: 'value',
                 min: 0,
-                max: 75,
+                max: 85,
                 interval: 35,
                 splitLine:{
                     show: true,
@@ -119,7 +138,7 @@ class FreezingPointStyleOptions {
             {
                 type: 'value',
                 min: 0,
-                max: 75,
+                max: 85,
                 interval: 25,
                 splitLine:{
                     show: true,
@@ -137,7 +156,9 @@ class FreezingPointStyleOptions {
         this.option = {
             title: {
                 text: this.chart_title ,
-                left: 'center'
+                left: 'center',
+                top: 30,
+
             },
             tooltip: {
                 trigger: 'item',
@@ -165,7 +186,7 @@ class FreezingPointStyleOptions {
                 {
                 type: 'value',
                 min: 0,
-                max: 75,
+                max: 85,
                 // 强制间隔是25
                 interval: 5,
                 //分割线样式
@@ -270,7 +291,8 @@ class FreezingPointStyleOptions {
                         }
                     }
                 },
-            }, this.line_25, this.line_35, this.line_50, this.line_50_twice, this.line_65, this.line_70, this.line_75
+            }, this.line_25, this.line_35, this.line_50, this.line_50_twice, this.line_65, this.line_70, this.line_75,
+                this.line_85
             ],
 
             series: [
