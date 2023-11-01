@@ -12,7 +12,7 @@
   - 给镜像打标签：```docker tag imageID TARGET_IMAGE[:TAG] ```
   - 查看容器：```docker ps```
   - 停止容器：```docker stop containerID```
-  - 删除容器：```docker rmi -f containerID```
+  - 删除容器：```docker rm -f containerID```
   - 运行容器：```docker run -d -i -p 5001:5001 imageID```
   - 修改容器名：```docker rename containerID short_term_indicator```
 
