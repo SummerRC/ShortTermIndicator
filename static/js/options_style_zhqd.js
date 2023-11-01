@@ -14,7 +14,7 @@ class MotionZhqdLineChart {
             },
             tooltip: {
                 trigger: 'item',
-                formatter: '日期: {b} <br/>情绪: {c}'       //鼠标放在该点，显示日期和情绪
+                formatter: '日期: {b} <br/>情绪: 20+{c}'       //鼠标放在该点，显示日期和情绪
             },
             xAxis: {
                 data: this.x_data,

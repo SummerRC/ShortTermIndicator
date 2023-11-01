@@ -28,7 +28,7 @@ class OptionsHistoryHighest {
             yAxis: {
                 type: 'value',
                 min: 1,
-                max: 13,
+                max: 14,
                 // 强制间隔是1
                 interval: 1,
                 // 显示次分割线

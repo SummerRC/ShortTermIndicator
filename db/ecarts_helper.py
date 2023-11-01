@@ -7,6 +7,8 @@ from db.base_ecarts_helper import BaseEchartsHelper
 from utils.index_motion_utils import IndexMotionUtils
 from utils.stock_utils import StockUtils
 
+# 为了适配Echarts的展示效果，Y轴数据自动-20
+__DEFAULT_NUM__ = 20
 
 class EchartsHelper(BaseEchartsHelper):
 
@@ -31,7 +33,7 @@ class EchartsHelper(BaseEchartsHelper):
 
         results = self.cursor.fetchall()
         for result in results:
-            self.zhqds.append(result[0]-20)
+            self.zhqds.append(result[0] - __DEFAULT_NUM__)
             # 去前置0的操作
             tm = result[1].timetuple()
             timestamp = str(tm.tm_mon) + "-" + str(tm.tm_mday)
@@ -45,7 +47,7 @@ class EchartsHelper(BaseEchartsHelper):
         self.timestamps.reverse()
         self.zhqd_timestamps.reverse()
 
-    # 查询的是最近一个交易日的综合强度数据，以分钟计算
+    # 查询的是最近3个交易日的综合强度数据，以分钟计算
     def query_most_recent_five_day_zhqds_from_db(self):
         json_data = StockUtils.get_most_num_trade_day(self.num_recent_zhqd)
 
@@ -64,7 +66,7 @@ class EchartsHelper(BaseEchartsHelper):
 
         results = self.cursor.fetchall()
         for result in results:
-            self.most_recent_trade_day_zhqds.append(result[0])
+            self.most_recent_trade_day_zhqds.append(result[0] - __DEFAULT_NUM__)
             # 只保留时、分
             timestamp = str(result[1].hour) + ":" + str(result[1].minute)
             self.most_recent_trade_day_timestamps.append(timestamp)
@@ -126,7 +128,7 @@ class EchartsHelper(BaseEchartsHelper):
             a = IndexMotionUtils.get_a_index_zdf(result[4])
             b = IndexMotionUtils.get_b_rate_szjs(result[1], result[2], result[3])
             c = IndexMotionUtils.get_c_trade_money(result[5])
-            self.index_motions.append(IndexMotionUtils.get_index_motion(a, b, c))
+            self.index_motions.append(IndexMotionUtils.get_index_motion(a, b, c) - __DEFAULT_NUM__)
 
         self.index_timestamps.reverse()
         self.index_motions.reverse()
@@ -172,4 +174,4 @@ class EchartsHelper(BaseEchartsHelper):
             b = IndexMotionUtils.get_b_rate_szjs(result[1], result[2], result[3])
             guss_trade_money = int(result[6]) + (int(result[4]) - int(result[5]))
             c = IndexMotionUtils.get_c_trade_money((guss_trade_money / pow(10, 4)))
-            self.index_m_motions.append(IndexMotionUtils.get_index_motion(a, b, c))
+            self.index_m_motions.append(IndexMotionUtils.get_index_motion(a, b, c) - __DEFAULT_NUM__)
