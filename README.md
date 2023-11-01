@@ -5,6 +5,18 @@
 特别注意，以下几个包含密码的配置文件不允许提交到代码仓库：
 - 1、config.ini 包含了数据库地址、用户名、数据库登陆密码、网站登陆密码等信息
 
+本项目常用的部署命令：
+  - 构建镜像：```docker build -t short_term_indicator:v1.7 .```
+  - 导出镜像: ```docker save -o short_term_indicator_v_1_7.tar imageID```
+  - 云服务器导入镜像：```docker load -i short_term_indicator_v_1_7.tar```
+  - 给镜像打标签：```docker tag imageID TARGET_IMAGE[:TAG] ```
+  - 查看容器：```docker ps```
+  - 停止容器：```docker stop containerID```
+  - 删除容器：```docker rmi -f containerID```
+  - 运行容器：```docker run -d -i -p 5001:5001 imageID```
+  - 修改容器名：```docker rename containerID short_term_indicator```
+
+
 ## 部分效果展示
 
 整体效果：

@@ -13,8 +13,16 @@ class MotionZhqdLineChart {
                 top: 30,
             },
             tooltip: {
-                trigger: 'item',
-                formatter: '日期: {b} <br/>情绪: 20+{c}'       //鼠标放在该点，显示日期和情绪
+                trigger: 'axis',
+                formatter: function(params) {
+                    let value = `${params[0].value}`
+                    value = parseInt(value) + 20
+                    return  '日期: ' + `${params[0].name}` + '<br/>' + '情绪: ' + value
+                },
+                axisPointer: {
+                    type: 'line',       //自动吸附到最近的点
+                    axis: 'x',
+                }
             },
             xAxis: {
                 data: this.x_data,
@@ -54,8 +62,9 @@ class MotionZhqdLineChart {
                         }
                     },
                 },
+                //不显示指示器
                 axisPointer: {
-                    show:true
+                    show:false
                 }
             }, this.wipe.line_wipe_10, this.wipe.line_wipe_15, this.wipe.line_wipe_25, this.wipe.line_wipe_35,
             this.wipe.line_wipe_45, this.wipe.line_draw_30, this.wipe.line_wipe_60_65],
