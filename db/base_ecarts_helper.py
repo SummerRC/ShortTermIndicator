@@ -26,6 +26,11 @@ class BaseEchartsHelper:
     trade_day = []
     rate_fengban = []
 
+    #昨日涨停/连板溢价率
+    zrztyj = []
+    zrlbyj = []
+    date_zrztyj = []
+
     def __init__(self, is_more_data):
         self.cursor = None
         self.conn = None

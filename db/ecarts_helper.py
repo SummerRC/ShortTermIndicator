@@ -10,6 +10,7 @@ from utils.stock_utils import StockUtils
 # 为了适配Echarts的展示效果，Y轴数据自动-20
 __DEFAULT_NUM__ = 20
 
+
 class EchartsHelper(BaseEchartsHelper):
 
     def __init__(self, is_more_data):
@@ -90,7 +91,10 @@ class EchartsHelper(BaseEchartsHelper):
 
         results = self.cursor.fetchall()
         for result in results:
-            self.trade_day.append(result[0])
+            # 去前置0的操作
+            tm = result[0].timetuple()
+            timestamp = str(tm.tm_mon) + "-" + str(tm.tm_mday)
+            self.trade_day.append(timestamp)
             self.highest.append(result[1])
             self.rate_fengban.append(result[2])
 
@@ -123,7 +127,7 @@ class EchartsHelper(BaseEchartsHelper):
         for result in results:
             # 去前置0的操作
             tm = result[0].timetuple()
-            timestamp = str(tm.tm_mon) + str(tm.tm_mday)
+            timestamp = str(tm.tm_mon) + "-" + str(tm.tm_mday)
             self.index_timestamps.append(timestamp)
             a = IndexMotionUtils.get_a_index_zdf(result[4])
             b = IndexMotionUtils.get_b_rate_szjs(result[1], result[2], result[3])
@@ -175,3 +179,31 @@ class EchartsHelper(BaseEchartsHelper):
             guss_trade_money = int(result[6]) + (int(result[4]) - int(result[5]))
             c = IndexMotionUtils.get_c_trade_money((guss_trade_money / pow(10, 4)))
             self.index_m_motions.append(IndexMotionUtils.get_index_motion(a, b, c) - __DEFAULT_NUM__)
+
+    # 查询昨日涨停溢价、昨日连板溢价
+    def query_ztyj_from_db(self):
+        sql = ("select IFNULL(ZRZTJ, 0), IFNULL(ZRLBJ, 0), Day from %s where is_trade_time = 0 "
+               "ORDER BY Day DESC LIMIT %s" %
+               (self.config_helper.db_table_name_da_ban, self.num_highest))
+
+        try:
+            self.cursor.execute(sql)
+        except Exception as e:
+            logging.log(logging.ERROR, str(e))
+
+        self.zrlbyj.clear()
+        self.zrlbyj.clear()
+        self.date_zrztyj.clear()
+
+        results = self.cursor.fetchall()
+        for result in results:
+            self.zrztyj.append(result[0])
+            self.zrlbyj.append(result[1])
+            # 去前置0的操作
+            tm = result[2].timetuple()
+            timestamp = str(tm.tm_mon) + "-" + str(tm.tm_mday)
+            self.date_zrztyj.append(timestamp)
+
+        self.zrztyj.reverse()
+        self.zrlbyj.reverse()
+        self.date_zrztyj.reverse()

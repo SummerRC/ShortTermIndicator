@@ -11,18 +11,27 @@ class OptionsHistoryFbRate {
                 left: 'center'
             },
             tooltip: {
-                trigger: 'item',
-                formatter: '日期: {b} <br/>封板率: {c}'       //鼠标放在该点，显示日期和封板率
+                trigger: 'axis',
+                formatter: '日期: {b} <br/>封板率: {c}',       //鼠标放在该点，显示日期和封板率
+                axisPointer: {
+                    type: 'line',       //自动吸附到最近的点
+                    axis: 'x',
+                }
             },
             xAxis: {
                 data: this.x_data,
                 // 刻度表现会居中
                 axisTick: {
-                    alignWithLabel: true
+                    alignWithLabel: true,
+                    show: false
                 },
                 axisLabel: {
                     interval: 'auto',      //0强制显示所有标签
                     rotate: 90,            //旋转之后能都显示得下，但有点丑
+                },
+                //坐标轴轴线
+                axisLine: {
+                    show: false,           // 不显示坐标轴线
                 },
             },
             yAxis: {

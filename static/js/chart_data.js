@@ -15,6 +15,10 @@ class ChartData {
     trade_day = []
     highest = []
     rate_fb = []
+    //涨停溢价
+    zrztyj = []
+    zrlbyj = []
+    date_zrztyj = []
 
     constructor() {}
 

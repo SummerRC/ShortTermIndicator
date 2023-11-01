@@ -20,6 +20,8 @@ class EchartsDataHelper:
         echarts_helper.query_most_recent_five_day_zhqds_from_db()
         # 查询连板高度和对应的交易日
         echarts_helper.query_highest_from_db()
+        # 查询昨日涨停溢价
+        echarts_helper.query_ztyj_from_db()
 
         # 关闭数据库
         echarts_helper.close_db()
@@ -32,6 +34,7 @@ class EchartsDataHelper:
                 'index_motions': echarts_helper.index_motions, 'index_timestamps': echarts_helper.index_timestamps,
                 'index_m_motions': echarts_helper.index_m_motions,
                 'index_m_timestamps': echarts_helper.index_m_timestamps,
+                'zrztyj': echarts_helper.zrztyj, 'zrlbyj': echarts_helper.zrlbyj, 'date_zrztyj': echarts_helper.date_zrztyj
                 }
 
         return json

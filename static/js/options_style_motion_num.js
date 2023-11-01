@@ -29,8 +29,12 @@ class MotionStrengthLineChart {
                 top: 30,
             },
             tooltip: {
-                trigger: 'item',
-                formatter: '日期: {b} <br/>情绪: {c}'       //鼠标放在该点，显示日期和情绪
+                trigger: 'axis',
+                formatter: '日期: {b} <br/>情绪: {c}',       //鼠标放在该点，显示日期和情绪
+                axisPointer: {
+                    type: 'line',       //自动吸附到最近的点
+                    axis: 'x',
+                }
             },
             xAxis: {
                 data: this.x_data,

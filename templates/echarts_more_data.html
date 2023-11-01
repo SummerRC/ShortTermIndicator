@@ -60,6 +60,18 @@
 <script type="text/javascript"> chartData.rate_fb.push('{{rate}}');</script>
 {% endfor %}
 
+{% for yj in json['zrztyj'] %}
+<script type="text/javascript"> chartData.zrztyj.push('{{yj}}');</script>
+{% endfor %}
+
+{% for yj in json['zrlbyj'] %}
+<script type="text/javascript"> chartData.zrlbyj.push('{{yj}}');</script>
+{% endfor %}
+
+{% for date in json['date_zrztyj'] %}
+<script type="text/javascript"> chartData.date_zrztyj.push('{{date}}');</script>
+{% endfor %}
+
 <body>
 <div class=".container-fluid" style="margin-top: 2px; margin-bottom: 32px">
     <!--    历史市场综合强度、最近三个交易日的市场综合强度-->
@@ -85,7 +97,13 @@
     <div class="row"  style="margin-top: 32px">
         <div class="col-lg-12" id="feng_ban_rate" style="height:500px;"></div>
     </div>
-
+      <!--  涨停溢价率  -->
+    <div class="row">
+         <div class="col-lg-12" id="zrlbyj_chart" style="height:500px;"></div>
+    </div>
+    <div class="row" >
+        <div class="col-lg-12" id="zrztyj_chart" style="height:500px;"></div>\
+    </div>
 </div>
 
 <!-- 引入 定义好ECharts样式的line_chart 文件 -->
@@ -94,6 +112,8 @@
 <script src="../static/js/wipe_freezing_boiling_point.js"></script>
 <script src="../static/js/options_style_freezing_boiling_point.js"></script>
 <script src="../static/js/options_style_history_fb_rate.js"></script>
+<script src="../static/js/options_style_zrztyj.js"></script>
+<script src="../static/js/options_style_zrlbyj.js"></script>
 <script type="text/javascript">
     //近50个交易日的指数情绪
     let options_index_motion_50day = new FreezingBoilingPointStyleOptions("情绪周期图", chartData.index_timestamps, chartData.index_motions);
@@ -137,6 +157,20 @@
     rate_fb_chart = echarts.init(document.getElementById('feng_ban_rate'));
     // 使用刚指定的配置项和数据显示图表。
     rate_fb_chart.setOption(options_fb_rate.option);
+
+        //近100个交易日的昨日涨停溢价率
+    let options_zrztyj = new OptionsZrztyj("涨停溢价率", chartData.date_zrztyj, chartData.zrztyj, chartData.rate_fb)
+    // 基于准备好的dom，初始化市场情绪echarts实例
+    zrztyj_chart = echarts.init(document.getElementById('zrztyj_chart'));
+    // 使用刚指定的配置项和数据显示图表。
+    zrztyj_chart.setOption(options_zrztyj.option);
+
+    //近100个交易日的昨日连板溢价率
+    let options_zrlbyj = new OptionsZrlbyj("连板溢价率", chartData.date_zrztyj, chartData.zrlbyj, chartData.rate_fb)
+    // 基于准备好的dom，初始化市场情绪echarts实例
+    zrlbyj_chart = echarts.init(document.getElementById('zrlbyj_chart'));
+    // 使用刚指定的配置项和数据显示图表。
+    zrlbyj_chart.setOption(options_zrlbyj.option);
 </script>
 </body>
 </html>

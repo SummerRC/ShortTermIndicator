@@ -1,18 +1,18 @@
-// 历史封板率的折线图表
-class OptionsHistoryHighest {
-    constructor(chart_title, trade_day, highest) {
+// 连板高度的折线图表
+class OptionsZrlbyj {
+    constructor(chart_title, trade_day, zrztyj) {
         this.chart_title = chart_title
         this.x_data = trade_day
-        this.y_data = highest
+        this.y_data_zrztyj = zrztyj
         // 指定图表的配置项和数据
         this.option = {
             title: {
-                text: this.chart_title ,
+                text: this.chart_title,
                 left: 'center'
             },
             tooltip: {
                 trigger: 'axis',
-                formatter: '日期: {b} <br/>高度: {c}',       //鼠标放在该点，显示日期和情绪
+                formatter: '日期: {b} <br/>溢价率: {c}',       //鼠标放在该点，显示日期和封板率
                 axisPointer: {
                     type: 'line',       //自动吸附到最近的点
                     axis: 'x',
@@ -27,7 +27,7 @@ class OptionsHistoryHighest {
                 },
                 axisLabel: {
                     interval: 'auto',      //0强制显示所有标签
-                    rotate: 90,         //旋转之后能都显示得下，但有点丑
+                    rotate: 90,            //旋转之后能都显示得下，但有点丑
                 },
                 //坐标轴轴线
                 axisLine: {
@@ -36,8 +36,8 @@ class OptionsHistoryHighest {
             },
             yAxis: {
                 type: 'value',
-                min: 1,
-                max: 14,
+                min: -4,
+                max: 10,
                 // 强制间隔是1
                 interval: 1,
                 // 显示次分割线
@@ -53,7 +53,7 @@ class OptionsHistoryHighest {
             },
             series: [
                 {
-                    data: this.y_data,
+                    data: this.y_data_zrztyj,
                     type: 'line',
                     smooth: true,
 
@@ -67,7 +67,23 @@ class OptionsHistoryHighest {
                     },
                     colorBy: "series",
                 }
-            ]
+            ],
+            //设觉映射组件，<=35显示绿色，>=65显示红色
+            visualMap: [{
+                dimension: 1,
+                show: false,
+                pieces: [{
+                    lt: 0,
+                    color: 'green'
+                },
+                {
+                    gte: 5,
+                    color: 'red'
+                }],
+                outOfRange: {
+                    color: '#5470c6'
+                },
+            }],
         };
     }
 }
