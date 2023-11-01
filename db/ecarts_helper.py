@@ -31,10 +31,10 @@ class EchartsHelper(BaseEchartsHelper):
 
         results = self.cursor.fetchall()
         for result in results:
-            self.zhqds.append(result[0])
+            self.zhqds.append(result[0]-20)
             # 去前置0的操作
             tm = result[1].timetuple()
-            timestamp = str(tm.tm_mon) + str(tm.tm_mday)
+            timestamp = str(tm.tm_mon) + "-" + str(tm.tm_mday)
             self.timestamps.append(timestamp)
             logging.log(logging.DEBUG, "zhqd: " + str(result[0]))
             logging.log(logging.DEBUG, "去前置0后的timestamps: " + timestamp)

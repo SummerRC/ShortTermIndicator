@@ -1,5 +1,14 @@
 import logging
 
+__A_MIN__ = -80
+__A_MAX__ = 80
+__B_MIN__ = 10
+__B_MAX__ = 90
+__C_MIN__ = -40
+__C_MAX__ = 40
+__TOTAL_MIN__ = __A_MIN__ + __B_MIN__ + __C_MIN__
+__TOTAL_MAX__ = __A_MAX__ + __B_MAX__ + __C_MAX__
+
 
 class IndexMotionUtils:
 
@@ -11,7 +20,7 @@ class IndexMotionUtils:
 
     @staticmethod
     def get_index_motion(a, b, c):
-        result = int(((a + b + c) - (-110)) * 100 / (210 - (-110)))
+        result = int(((a + b + c) - __TOTAL_MIN__) * 100 / (__TOTAL_MAX__ - __TOTAL_MIN__))
         # logging.log(logging.DEBUG, "get_index_motion: " + str(result))
         return result
 
@@ -21,10 +30,10 @@ class IndexMotionUtils:
     def get_a_index_zdf(shang_zhen_zhi_shu):
         result = shang_zhen_zhi_shu / 100 * 2000
         # logging.log(logging.DEBUG, "get_a_index_zdf: " + str(result))
-        if result > 80:
-            return 80
-        elif result < -80:
-            return -80
+        if result > __A_MAX__:
+            return __A_MAX__
+        elif result < __A_MIN__:
+            return __A_MIN__
         else:
             return result
 
@@ -33,10 +42,10 @@ class IndexMotionUtils:
     def get_b_rate_szjs(SZJS, XDJS, PPJS):
         result = SZJS / (SZJS + XDJS + PPJS) * 100
         # logging.log(logging.DEBUG, "get_b_rate_szjs: " + str(result))
-        if result > 90:
-            return 90
-        elif result < 10:
-            return 10
+        if result > __B_MAX__:
+            return __B_MAX__
+        elif result < __B_MIN__:
+            return __B_MIN__
         else:
             return result
 
@@ -46,10 +55,10 @@ class IndexMotionUtils:
     def get_c_trade_money(total_trade_money):
         result = (total_trade_money - 9000) / 100
         # logging.log(logging.DEBUG, "get_c_trade_money: " + str(result))
-        if result > 40:
-            return 40
-        elif result < -40:
-            return -40
+        if result > __C_MAX__:
+            return __C_MAX__
+        elif result < __C_MIN__:
+            return __C_MIN__
         else:
             return result
 

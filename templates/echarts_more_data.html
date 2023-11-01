@@ -89,12 +89,13 @@
 </div>
 
 <!-- 引入 定义好ECharts样式的line_chart 文件 -->
-<script src="../static/js/options_style_motion_num.js"></script>
+<script src="../static/js/wipe_zhqd.js"></script>
+<script src="../static/js/options_style_zhqd.js"></script>
 <script src="../static/js/options_style_history_fb_rate.js"></script>
 <script src="../static/js/options_style_freezing_point.js"></script>
 <script type="text/javascript">
     //近50个交易日的指数情绪
-    let options_index_motion_50day = new MotionStrengthLineChart("指数情绪周期图", chartData.index_timestamps, chartData.index_motions);
+    let options_index_motion_50day = new FreezingPointStyleOptions("指数情绪周期图", chartData.index_timestamps, chartData.index_motions);
     // 基于准备好的dom，初始化市场情绪echarts实例
     index_motion_chart = echarts.init(document.getElementById('index_motion_strength'));
     // 使用刚指定的配置项和数据显示图表。
@@ -108,7 +109,7 @@
     index_last_trade_day_motion_strength.setOption(options_index_motion_recent.option);
 
     //近100个交易日的市场综合强度
-    let options_chart_100day = new MotionStrengthLineChart("市场综合强度", chartData.timestamps, chartData.zhqds);
+    let options_chart_100day = new MotionZhqdLineChart("市场综合强度", chartData.timestamps, chartData.zhqds);
     // 基于准备好的dom，初始化市场情绪echarts实例
     motion_strength_chart = echarts.init(document.getElementById('motion_strength'));
     // 使用刚指定的配置项和数据显示图表。
