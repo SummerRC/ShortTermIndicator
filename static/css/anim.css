@@ -12,8 +12,8 @@ ul {
 li {
   list-style-type: none;
   position: absolute;
-  top: 0px;
-  left: 0px;
+  top: 0;
+  left: 0;
   width: 20px;
   height: 20px;
   background: red;
@@ -29,7 +29,7 @@ li {
 #b {
   animation: b 1s ease-in-out infinite;
   top: -40px;
-  left: 0px;
+  left: 0;
 }
 
 #c {
@@ -40,19 +40,19 @@ li {
 
 #d {
   animation: d 1s ease-in-out infinite;
-  top: 0px;
+  top: 0;
   left: -40px;
 }
 
 #e {
   animation: e 1s ease-in-out infinite;
-  top: 0px;
-  left: 0px;
+  top: 0;
+  left: 0;
 }
 
 #f {
   animation: f 1s ease-in-out infinite;
-  top: 0px;
+  top: 0;
   left: 40px;
 }
 
@@ -65,7 +65,7 @@ li {
 #h {
   animation: h 1s ease-in-out infinite;
   top: 40px;
-  left: 0px;
+  left: 0;
 }
 
 #i {
@@ -76,11 +76,11 @@ li {
 
 @keyframes a {
   50% {
-    top: 0px;
+    top: 0;
     left: -40px;
   }
   100% {
-    top: 0px;
+    top: 0;
     left: -40px;
   }
 }
@@ -97,11 +97,11 @@ li {
 @keyframes c {
   50% {
     top: -40px;
-    left: 0px;
+    left: 0;
   }
   100% {
     top: -40px;
-    left: 0px;
+    left: 0;
   }
 }
 @keyframes d {
@@ -127,11 +127,11 @@ li {
 @keyframes g {
   50% {
     top: 40px;
-    left: 0px;
+    left: 0;
   }
   100% {
     top: 40px;
-    left: 0px;
+    left: 0;
   }
 }
 @keyframes h {
@@ -146,11 +146,11 @@ li {
 }
 @keyframes i {
   50% {
-    top: 0px;
+    top: 0;
     left: 40px;
   }
   100% {
-    top: 0px;
+    top: 0;
     left: 40px;
   }
 }

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <title>短线指标</title>
-    <link rel="stylesheet" href="../static/css/anim.css">
+    <link href="../static/css/anim.css" rel="stylesheet">
     <!-- 引入 ECharts 文件 -->
     <script src="../static/js/echarts.min.js"></script>
     <script src="../static/js/chart_data.js"></script>
@@ -15,7 +15,7 @@
 </head>
 
 <!--  先拿到从flask传来的数据-->
-<script type="text/javascript" >let chartData = new ChartData(); </script>
+<script type="text/javascript">let chartData = new ChartData(); </script>
 
 {% for motion in json['index_motions'] %}
 <script type="text/javascript"> chartData.index_motions.push('{{motion}}');</script>
@@ -49,7 +49,7 @@
 <script type="text/javascript"> chartData.most_recent_day_zhqds.push('{{zhqd}}'); </script>
 {% endfor %}
 
-{% for day in json['trade_day']  %}
+{% for day in json['trade_day'] %}
 <script type="text/javascript"> chartData.trade_day.push('{{day}}'); </script>
 {% endfor %}
 
@@ -78,7 +78,7 @@
     <ul>
         <li id='a'></li>
         <li id='b'></li>
-         <li id='c'></li>
+        <li id='c'></li>
         <li id='d'></li>
         <li id='e'></li>
         <li id='f'></li>
@@ -96,19 +96,19 @@
         <div class="col-md-6" id="last_trade_day_zhqd" style="height:500px;"></div>
     </div>
     <!--    历史指数情绪、最近三个交易日的指数情绪-->
-    <div class="row" >
+    <div class="row">
         <!-- 为 ECharts 准备一个定义了宽高的 DOM -->
         <div class="col-md-6" id="index_motion_strength" style="height:500px;"></div>
         <div class="col-md-6" id="index_last_trade_day_motion_strength" style="height:500px;"></div>
     </div>
     <!--  历史连板高度-->
     <!--  历史封板率-->
-    <div class="row" >
+    <div class="row">
         <div class="col-lg-6" id="lian_ban_highest" style="height:500px;"></div>
         <div class="col-lg-6" id="feng_ban_rate" style="height:500px;"></div>
     </div>
     <!--  涨停溢价率  -->
-    <div class="row" >
+    <div class="row">
         <div class="col-lg-6" id="zrztyj_chart" style="height:500px;"></div>
         <div class="col-lg-6" id="zrlbyj_chart" style="height:500px;"></div>
     </div>
