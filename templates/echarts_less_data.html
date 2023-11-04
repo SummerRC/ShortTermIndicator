@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <title>短线指标</title>
+    <link rel="stylesheet" href="../static/css/anim.css">
     <!-- 引入 ECharts 文件 -->
     <script src="../static/js/echarts.min.js"></script>
     <script src="../static/js/chart_data.js"></script>
@@ -73,6 +74,20 @@
 {% endfor %}
 
 <body>
+<div class="loading_box">
+    <ul>
+        <li id='a'></li>
+        <li id='b'></li>
+         <li id='c'></li>
+        <li id='d'></li>
+        <li id='e'></li>
+        <li id='f'></li>
+        <li id='g'></li>
+        <li id='h'></li>
+        <li id='i'></li>
+    </ul>
+</div>
+
 <div class=".container-fluid">
     <!--    历史市场综合强度、最近三个交易日的市场综合强度-->
     <div class="row" style="margin-top: 2px">
@@ -109,6 +124,15 @@
 <script src="../static/js/options_style_zrztyj.js"></script>
 <script src="../static/js/options_style_zrlbyj.js"></script>
 <script type="text/javascript">
+    // 页面加载完毕隐藏家在动画
+    document.onreadystatechange = function () {
+        if (document.readyState === "complete") {
+            setTimeout(() => {
+                $(".loading_box").hide();
+            }, 1000);
+        }
+    }
+
     //近50个交易日的指数情绪
     let options_index_motion_50day = new FreezingBoilingPointStyleOptions("情绪周期图", chartData.index_timestamps, chartData.index_motions);
     // 基于准备好的dom，初始化市场情绪echarts实例
