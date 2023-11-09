@@ -25,6 +25,7 @@ class BaseEchartsHelper:
     highest = []
     trade_day = []
     rate_fengban = []
+    num_lianban = []
 
     #昨日涨停/连板溢价率
     zrztyj = []

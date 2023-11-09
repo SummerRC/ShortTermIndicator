@@ -15,10 +15,11 @@ class ChartData {
     trade_day = []
     highest = []
     rate_fb = []
-    //涨停溢价
+    //涨停溢价、连板家数
     zrztyj = []
     zrlbyj = []
     date_zrztyj = []
+    lb_num = []
 
     constructor() {}
 

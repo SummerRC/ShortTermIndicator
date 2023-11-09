@@ -74,10 +74,10 @@ class EchartsHelper(BaseEchartsHelper):
             logging.log(logging.DEBUG, "zhqd: " + str(result[0]))
             logging.log(logging.DEBUG, "去日期后的timestamps: " + timestamp)
 
-    # 查询最高板、封板率
+    # 查询最高板、封板率、连板家数
     def query_highest_from_db(self):
         # 查询出数据之后按照 index 值降序排序，并获取前60条
-        sql = ("select trade_day, high_lianban, rate_fengban from %s ORDER BY trade_day DESC LIMIT %s" %
+        sql = ("select trade_day, high_lianban, rate_fengban, num_zt_lianban from %s ORDER BY trade_day DESC LIMIT %s" %
                (self.config_helper.db_tn_tdx_history_zdt, self.num_highest))
 
         try:
@@ -88,6 +88,7 @@ class EchartsHelper(BaseEchartsHelper):
         self.highest.clear()
         self.trade_day.clear()
         self.rate_fengban.clear()
+        self.num_lianban.clear()
 
         results = self.cursor.fetchall()
         for result in results:
@@ -97,10 +98,12 @@ class EchartsHelper(BaseEchartsHelper):
             self.trade_day.append(timestamp)
             self.highest.append(result[1])
             self.rate_fengban.append(result[2])
+            self.num_lianban.append(result[3])
 
         self.trade_day.reverse()
         self.highest.reverse()
         self.rate_fengban.reverse()
+        self.num_lianban.reverse()
 
     # 查询最近100个交易日的的市场情绪数据
     # 2.指数情绪量化（以下数字之和,范围[-110:210] ）: (a+b+c)-(-110) * 100 / (210-(-110))

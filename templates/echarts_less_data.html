@@ -57,6 +57,10 @@
 <script type="text/javascript"> chartData.highest.push('{{high}}');</script>
 {% endfor %}
 
+{% for num_lb in json['num_lianban'] %}
+<script type="text/javascript"> chartData.lb_num.push('{{num_lb}}');</script>
+{% endfor %}
+
 {% for rate in json['rate_fengban'] %}
 <script type="text/javascript"> chartData.rate_fb.push('{{rate}}');</script>
 {% endfor %}
@@ -101,16 +105,19 @@
         <div class="col-md-6" id="index_motion_strength" style="height:500px;"></div>
         <div class="col-md-6" id="index_last_trade_day_motion_strength" style="height:500px;"></div>
     </div>
-    <!--  历史连板高度-->
-    <!--  历史封板率-->
+    <!--  历史连板高度、历史封板率-->
     <div class="row">
         <div class="col-lg-6" id="lian_ban_highest" style="height:500px;"></div>
         <div class="col-lg-6" id="feng_ban_rate" style="height:500px;"></div>
     </div>
-    <!--  涨停溢价率  -->
+    <!--  涨停溢价率、连板溢价率  -->
     <div class="row">
         <div class="col-lg-6" id="zrztyj_chart" style="height:500px;"></div>
         <div class="col-lg-6" id="zrlbyj_chart" style="height:500px;"></div>
+    </div>
+    <!--  连板家数  -->
+    <div class="row">
+        <div class="col-lg-6" id="lb_num_chart" style="height:500px;"></div>
     </div>
 
 </div>
@@ -123,6 +130,7 @@
 <script src="../static/js/options_style_history_fb_rate.js"></script>
 <script src="../static/js/options_style_zrztyj.js"></script>
 <script src="../static/js/options_style_zrlbyj.js"></script>
+<script src="../static/js/opyions_style_history_lb_num.js"></script>
 <script type="text/javascript">
     // 页面加载完毕隐藏家在动画
     document.onreadystatechange = function () {
@@ -177,18 +185,25 @@
     rate_fb_chart.setOption(options_fb_rate.option);
 
     //近100个交易日的昨日涨停溢价率
-    let options_zrztyj = new OptionsZrztyj("涨停溢价率", chartData.date_zrztyj, chartData.zrztyj, chartData.rate_fb)
+    let options_zrztyj = new OptionsZrztyj("涨停溢价率", chartData.date_zrztyj, chartData.zrztyj)
     // 基于准备好的dom，初始化市场情绪echarts实例
     zrztyj_chart = echarts.init(document.getElementById('zrztyj_chart'));
     // 使用刚指定的配置项和数据显示图表。
     zrztyj_chart.setOption(options_zrztyj.option);
 
     //近100个交易日的昨日连板溢价率
-    let options_zrlbyj = new OptionsZrlbyj("连板溢价率", chartData.date_zrztyj, chartData.zrlbyj, chartData.rate_fb)
+    let options_zrlbyj = new OptionsZrlbyj("连板溢价率", chartData.date_zrztyj, chartData.zrlbyj)
     // 基于准备好的dom，初始化市场情绪echarts实例
     zrlbyj_chart = echarts.init(document.getElementById('zrlbyj_chart'));
     // 使用刚指定的配置项和数据显示图表。
     zrlbyj_chart.setOption(options_zrlbyj.option);
+
+   //近100个交易日的连板家数
+    let options_lb_num = new OptionsHistoryLbNum("连板家数", chartData.trade_day, chartData.lb_num)
+    // 基于准备好的dom，初始化市场情绪echarts实例
+    lb_num_chart = echarts.init(document.getElementById('lb_num_chart'));
+    // 使用刚指定的配置项和数据显示图表。
+    lb_num_chart.setOption(options_lb_num.option);
 
 </script>
 </body>

@@ -13,6 +13,7 @@ app = Flask(__name__)
 
 @app.before_request
 def require_login():
+
     config_helper = ConfigHelper()
     if config_helper.need_login:
         auth = request.authorization
@@ -56,5 +57,6 @@ if __name__ == '__main__':
 
 def authenticate():
     """Sends a 401 response that enables basic auth"""
-    return Response("<script>alert('Fail to login: basic auth for ScrapydWeb has been enabled');</script>",
-                    401, {'WWW-Authenticate': 'Basic realm="ScrapydWeb Basic Auth Required"'})
+    return Response("<script>alert('Login Failed：Please enter the correct account and password.');</script>",
+                    401,
+                    {'WWW-Authenticate': 'Basic realm="Please enter the correct account and password."'})
