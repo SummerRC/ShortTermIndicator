@@ -37,8 +37,8 @@ class OptionsZrztyj {
             },
             yAxis: {
                 type: 'value',
-                min: -1,
-                max: 10,
+                min: -2,
+                max: 5,
                 // 强制间隔是1
                 interval: 1,
                 // 显示次分割线
