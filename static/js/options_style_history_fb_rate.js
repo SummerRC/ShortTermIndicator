@@ -8,7 +8,8 @@ class OptionsHistoryFbRate {
         this.option = {
             title: {
                 text: this.chart_title,
-                left: 'center'
+                left: 'center',
+                top: 10,
             },
             tooltip: {
                 trigger: 'axis',

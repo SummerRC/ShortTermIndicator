@@ -11,8 +11,7 @@ class FreezingBoilingPointStyleOptions {
             title: {
                 text: this.chart_title ,
                 left: 'center',
-                top: 30,
-
+                top: 50,    //标题与 Top 的 margin
             },
             tooltip: {
                 trigger: 'axis',

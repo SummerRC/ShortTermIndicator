@@ -93,33 +93,31 @@
 </div>
 
 <div class=".container-fluid">
-    <!--    历史市场综合强度、最近三个交易日的市场综合强度-->
-    <div class="row" style="margin-top: 2px">
-        <!-- 为 ECharts 准备一个定义了宽高的 DOM -->
-        <div class="col-md-6" id="zhqd" style="height:500px;"></div>
-        <div class="col-md-6" id="last_trade_day_zhqd" style="height:500px;"></div>
+    <!--    综合强度、近三日综合强度-->
+    <div class="row" style="margin-top: -40px">
+        <div class="col-md-6" id="zhqd" style="height:400px;"></div>
+        <div class="col-md-6" id="last_trade_day_zhqd" style="height:400px;"></div>
     </div>
-    <!--    历史指数情绪、最近三个交易日的指数情绪-->
+    <!--    情绪周期图、近三日情绪走势-->
     <div class="row">
         <!-- 为 ECharts 准备一个定义了宽高的 DOM -->
-        <div class="col-md-6" id="index_motion_strength" style="height:500px;"></div>
-        <div class="col-md-6" id="index_last_trade_day_motion_strength" style="height:500px;"></div>
+        <div class="col-md-6" id="index_motion_strength" style="height:400px; margin-top: -40px;"></div>
+        <div class="col-md-6" id="index_last_trade_day_motion_strength" style="height:400px; margin-top: -40px;"></div>
     </div>
     <!--  历史连板高度、历史封板率-->
-    <div class="row">
-        <div class="col-lg-6" id="lian_ban_highest" style="height:500px;"></div>
-        <div class="col-lg-6" id="feng_ban_rate" style="height:500px;"></div>
+    <div class="row" >
+        <div class="col-lg-6" id="lian_ban_highest" style="height:400px;"></div>
+        <div class="col-lg-6" id="feng_ban_rate" style="height:400px;"></div>
     </div>
     <!--  涨停溢价率、连板溢价率  -->
     <div class="row">
-        <div class="col-lg-6" id="zrztyj_chart" style="height:500px;"></div>
-        <div class="col-lg-6" id="zrlbyj_chart" style="height:500px;"></div>
+        <div class="col-lg-6" id="zrztyj_chart" style="height:400px;"></div>
+        <div class="col-lg-6" id="zrlbyj_chart" style="height:400px;"></div>
     </div>
-    <!--  连板家数  -->
+    <!--  连板家数（判断情绪见顶的转折点有效、20是个坎）  -->
     <div class="row">
-        <div class="col-lg-6" id="lb_num_chart" style="height:500px;"></div>
+        <div class="col-lg-6" id="lb_num_chart" style="height:400px;"></div>
     </div>
-
 </div>
 
 <!-- 引入 定义好ECharts样式的line_chart 文件 -->
@@ -149,7 +147,7 @@
     index_motion_chart.setOption(options_index_motion_50day.option);
 
     //近最近5个交易日的指数情绪
-    let options_index_motion_recent = new FreezingBoilingPointStyleOptions("近三日情绪走势（分钟级）", chartData.index_m_timestamps, chartData.index_m_motions)
+    let options_index_motion_recent = new FreezingBoilingPointStyleOptions("近三日情绪走势", chartData.index_m_timestamps, chartData.index_m_motions)
     // 基于准备好的dom，初始化市场情绪echarts实例
     index_last_trade_day_motion_strength = echarts.init(document.getElementById('index_last_trade_day_motion_strength'));
     // 使用刚指定的配置项和数据显示图表。
@@ -163,7 +161,7 @@
     zhqd_chart.setOption(options_chart_50day.option);
 
     //近最近三个交易日的市场综合强度
-    let options_last_trade_day = new FreezingBoilingPointStyleOptions("近三日综合强度（分钟级）", chartData.most_recent_day_timestamps,
+    let options_last_trade_day = new FreezingBoilingPointStyleOptions("近三日综合强度", chartData.most_recent_day_timestamps,
         chartData.most_recent_day_zhqds)
     // 基于准备好的dom，初始化市场情绪echarts实例
     last_trade_day_zhqd_chart = echarts.init(document.getElementById('last_trade_day_zhqd'));

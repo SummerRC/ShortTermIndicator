@@ -26,7 +26,7 @@ class MotionStrengthLineChart {
             title: {
                 text: this.chart_title ,
                 left: 'center',
-                top: 30,
+                top: 50,
             },
             tooltip: {
                 trigger: 'axis',

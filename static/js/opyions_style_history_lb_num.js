@@ -8,7 +8,8 @@ class OptionsHistoryLbNum {
         this.option = {
             title: {
                 text: this.chart_title ,
-                left: 'center'
+                left: 'center',
+                top: 10,
             },
             tooltip: {
                 trigger: 'axis',
@@ -37,7 +38,7 @@ class OptionsHistoryLbNum {
             yAxis: {
                 type: 'value',
                 min: 3,
-                max: 22,
+                max: 20,
                 // 强制间隔是1
                 interval: 1,
                 // 显示次分割线
@@ -67,7 +68,23 @@ class OptionsHistoryLbNum {
                     },
                     colorBy: "series",
                 }
-            ]
+            ],
+            //设觉映射组件，<=35显示绿色，>=65显示红色
+            visualMap: [{
+                dimension: 1,
+                show: false,
+                pieces: [{
+                    lte: 5,
+                    color: 'green'
+                },
+                {
+                    gt: 18,
+                    color: 'red'
+                }],
+                outOfRange: {
+                    color: '#5470c6'
+                },
+            }],
         };
     }
 }
