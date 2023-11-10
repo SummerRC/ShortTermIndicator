@@ -61,6 +61,10 @@
 <script type="text/javascript"> chartData.lb_num.push('{{num_lb}}');</script>
 {% endfor %}
 
+{% for dieting in json['num_touch_dieting'] %}
+<script type="text/javascript"> chartData.num_touch_dieting.push('{{dieting}}');</script>
+{% endfor %}
+
 {% for rate in json['rate_fengban'] %}
 <script type="text/javascript"> chartData.rate_fb.push('{{rate}}');</script>
 {% endfor %}
@@ -114,9 +118,10 @@
         <div class="col-lg-6" id="zrztyj_chart" style="height:400px;"></div>
         <div class="col-lg-6" id="zrlbyj_chart" style="height:400px;"></div>
     </div>
-    <!--  连板家数（判断情绪见顶的转折点有效、20是个坎）  -->
+    <!--  连板家数（判断情绪见顶的转折点有效、20是个坎）、盘中跌停家数  -->
     <div class="row">
         <div class="col-lg-6" id="lb_num_chart" style="height:400px;"></div>
+        <div class="col-lg-6" id="chart_num_touch_dieting" style="height:400px;"></div>
     </div>
 </div>
 
@@ -129,6 +134,7 @@
 <script src="../static/js/options_style_zrztyj.js"></script>
 <script src="../static/js/options_style_zrlbyj.js"></script>
 <script src="../static/js/opyions_style_history_lb_num.js"></script>
+<script src="../static/js/opyions_style_history_num_touch_dieting.js"></script>
 <script type="text/javascript">
     // 页面加载完毕隐藏家在动画
     document.onreadystatechange = function () {
@@ -202,6 +208,13 @@
     lb_num_chart = echarts.init(document.getElementById('lb_num_chart'));
     // 使用刚指定的配置项和数据显示图表。
     lb_num_chart.setOption(options_lb_num.option);
+
+    //近100个交易日的盘中跌停家数
+    let options_num_touch_dieting = new OptionsHistoryNumTouchDT("盘中跌停家数", chartData.trade_day, chartData.num_touch_dieting)
+    // 基于准备好的dom，初始化市场情绪echarts实例
+    chart_num_touch_dieting = echarts.init(document.getElementById('chart_num_touch_dieting'));
+    // 使用刚指定的配置项和数据显示图表。
+    chart_num_touch_dieting.setOption(options_num_touch_dieting.option);
 
 </script>
 </body>

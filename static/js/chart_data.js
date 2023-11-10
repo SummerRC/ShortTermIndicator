@@ -20,6 +20,7 @@ class ChartData {
     zrlbyj = []
     date_zrztyj = []
     lb_num = []
+    num_touch_dieting = []
 
     constructor() {}
 

@@ -6,7 +6,7 @@ import pymysql
 from utils.config_helper import ConfigHelper
 
 
-class BaseEchartsHelper:
+class BaseDbHelper:
     # 指数情绪（按日）
     index_motions = []
     index_timestamps = []
@@ -26,6 +26,7 @@ class BaseEchartsHelper:
     trade_day = []
     rate_fengban = []
     num_lianban = []
+    num_touch_dieting = []
 
     #昨日涨停/连板溢价率
     zrztyj = []
