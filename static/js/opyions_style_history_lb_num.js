@@ -78,7 +78,7 @@ class OptionsHistoryLbNum {
                     color: 'green'
                 },
                 {
-                    gt: 18,
+                    gt: 15,
                     color: 'red'
                 }],
                 outOfRange: {

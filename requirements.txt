@@ -1,4 +1,4 @@
-chinese-calendar==1.8.1
+chinese-calendar==1.9.0
 click==8.1.7
 Flask==2.2.5
 gevent==22.10.2
